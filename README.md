@@ -1,31 +1,44 @@
 <div align="center">
 
-# 🗳️ NagarikAI
-### *India's Smartest Civic Education Platform*
+<img src="https://raw.githubusercontent.com/LALITHD-21/NagarikAI/master/logo.png" width="120" height="120" alt="NagarikAI Logo" style="border-radius:22px"/>
+
+# नागरिक AI · NagarikAI
+
+### *India's Smartest AI-Powered Civic Intelligence Platform*
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://NagarikAI.run.app)
-[![Version](https://img.shields.io/badge/Version-2.0.0-6366F1?style=for-the-badge)](#)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](#deployment)
+[![GitHub Stars](https://img.shields.io/github/stars/LALITHD-21/NagarikAI?style=for-the-badge&color=6366F1&logo=github)](https://github.com/LALITHD-21/NagarikAI/stargazers)
+[![Version](https://img.shields.io/badge/Version-2.0.0_Premium-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
-[![Size](https://img.shields.io/badge/Bundle_Size-<10MB-F59E0B?style=for-the-badge)](#performance)
-[![Accessibility](https://img.shields.io/badge/WCAG-2.1_AA-06B6D4?style=for-the-badge)](#accessibility)
-[![Security](https://img.shields.io/badge/XSS-Protected-EF4444?style=for-the-badge)](#security)
+[![PWA](https://img.shields.io/badge/PWA-Offline_Ready-F59E0B?style=for-the-badge&logo=pwa)](manifest.json)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1_AA-06B6D4?style=for-the-badge)](README.md#accessibility)
+[![Security](https://img.shields.io/badge/CSP-Hardened-EF4444?style=for-the-badge)](#security)
+[![Bundle](https://img.shields.io/badge/Bundle-<10MB-10B981?style=for-the-badge)](#performance)
 
 <br/>
 
-> **NagarikAI** is a premium, context-aware civic assistant that helps every Indian citizen understand, participate in, and engage with the democratic process — from checking eligibility to finding their polling booth on a live Google Map.
+> **"Empowering every Indian citizen to understand, participate in, and own their democratic process — powered by AI."**
 
 <br/>
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│   💬 Smart AI Chat  ·  🗳️ Eligibility  ·  📍 Booth Finder      │
-│   📅 Timeline  ·  🧠 Quiz  ·  💡 Myths  ·  🌐 Multilingual     │
-└─────────────────────────────────────────────────────────────────┘
+╔═══════════════════════════════════════════════════════════════╗
+║  💬 AI Chat  ·  ✅ Eligibility  ·  📍 Booth Finder (Maps)   ║
+║  📅 Timeline  ·  🧠 Quiz  ·  💡 Myths  ·  🌐 EN/HI/KN       ║
+╚═══════════════════════════════════════════════════════════════╝
 ```
 
 </div>
+
+---
+
+## 🌟 What is NagarikAI?
+
+**NagarikAI** (नागरिक = *Citizen* in Hindi/Sanskrit) is a **premium civic intelligence platform** built for every Indian voter. It transforms complex election procedures into simple, interactive, and beautiful experiences — all offline-capable, zero-install, no login required.
+
+Whether you are a **first-time voter**, a **returning citizen**, or an **NRI overseas elector** — NagarikAI guides you through the entire democratic journey in seconds.
 
 ---
 
@@ -33,292 +46,361 @@
 
 | # | Section |
 |---|---------|
-| 1 | [✨ Key Features](#-key-features) |
-| 2 | [🎨 UI/UX Design System](#-uiux-design-system) |
+| 1 | [✨ Feature Showcase](#-feature-showcase) |
+| 2 | [🎨 Design System](#-design-system) |
 | 3 | [🏗️ Architecture](#️-architecture) |
-| 4 | [📁 Project Structure](#-project-structure) |
-| 5 | [🧠 Smart Assistant Logic](#-smart-assistant-logic) |
-| 6 | [🌍 Google Services Integration](#-google-services-integration) |
-| 7 | [🔐 Security Implementation](#-security-implementation) |
+| 4 | [📁 File Structure](#-file-structure) |
+| 5 | [🧠 AI Logic Engine](#-ai-logic-engine) |
+| 6 | [🌍 Google Services](#-google-services) |
+| 7 | [🔐 Security](#-security) |
 | 8 | [♿ Accessibility](#-accessibility) |
-| 9 | [🧪 Testing Suite](#-testing-suite) |
-| 10 | [🚀 Setup & Deployment](#-setup--deployment) |
-| 11 | [🐳 Docker & Cloud Run](#-docker--cloud-run) |
-| 12 | [⚡ Performance](#-performance) |
-| 13 | [🗺️ Roadmap](#️-roadmap) |
+| 9 | [🧪 Testing](#-testing) |
+| 10 | [🚀 Deployment](#-deployment) |
+| 11 | [⚡ Performance](#-performance) |
+| 12 | [🗺️ Roadmap](#️-roadmap) |
+| 13 | [🤝 Contributing](#-contributing) |
 
 ---
 
-## ✨ Key Features
+## ✨ Feature Showcase
 
-### 🤖 Smart AI Chatbot
-Context-aware conversational assistant that remembers your profile (name, age, state) and gives **personalised responses**.
+### 🤖 Context-Aware AI Chatbot
 
-- 📌 Decision-tree logic — ordered keyword matching from specific → general
-- 👤 Profile-aware — greets you by name, answers eligibility based on your saved age
-- 💬 Typing stream animation — bot responses render character-by-character
-- 🛡️ XSS-safe — user inputs sanitized before rendering, bot uses safe markdown subset
-- 🔊 11 knowledge domains: elections, voting, registration, EVM, NOTA, Model Code, documents, booth, ECI, why vote, NRI
+The chatbot is the heart of NagarikAI. It uses a **3-layer intelligence system**:
+
+```
+┌─────────────────────────────────────────┐
+│  LAYER 1 — Profile Context              │
+│  Reads: name, age, state from profile   │
+│  → Greets by name, personalises answers │
+├─────────────────────────────────────────┤
+│  LAYER 2 — Decision Tree (11 domains)  │
+│  Keyword matching: MCC → ECI → NOTA    │
+│  → EVM → Booths → Eligibility → ...    │
+├─────────────────────────────────────────┤
+│  LAYER 3 — Streaming Renderer           │
+│  Character-by-character typewriter      │
+│  XSS-safe: sanitize() on all input     │
+└─────────────────────────────────────────┘
+```
+
+**11 Knowledge Domains covered:**
+
+| Domain | Key Topics |
+|--------|-----------|
+| 🗳️ Elections | Lok Sabha, Vidhan Sabha, Local Body types |
+| 📋 Voting | 6-step process, EVM operation, VVPAT |
+| 📝 Registration | Form 6, Form 6A (NRI), NVSP portal |
+| 💻 EVM | Standalone unit, no network, paper trail |
+| 🔴 NOTA | Supreme Court 2013, counting rules |
+| 📜 Model Code | Timeline, restrictions, EC powers |
+| 🪪 Documents | 12 accepted photo IDs at booth |
+| 📍 Booth Finder | SMS 1950, voters.eci.gov.in |
+| 🏛️ ECI | History, powers, Chief Election Commissioner |
+| 🌟 Why Vote | Impact stats, civic duty |
+| 🌏 NRI Voting | Overseas Electors, Form 6A guide |
+
+---
 
 ### ✅ Voter Eligibility Engine
-Multi-criteria wizard that returns a **personalised eligibility verdict** with actionable next steps.
 
-| Input | Logic | Output |
-|-------|-------|--------|
-| Age < 18 | Underage | Years until eligible + guidance |
-| Citizenship = No | Non-citizen | Legal information |
-| Citizenship = NRI | Overseas elector | Form 6A steps |
-| Age ≥ 18, Citizen = Yes | Eligible | Registration steps + badges |
-| Invalid age (0, >150, null) | Invalid | Clear error message |
+Smart multi-criteria checker with instant personalised verdicts:
 
-### 📍 Polling Booth Finder (Google Maps)
-Real-time booth search with **embedded Google Maps iframe** — no API key required.
-
-- 🔍 Text search by area or PIN code
-- 📡 GPS geolocation — opens Google Maps with `polling booth near [lat,lon]`
-- 🗺️ Live iframe embed appears inline after search
-- 📅 Google Calendar deep-link to add election day reminder
-
-### 📅 Election Timeline
-Interactive visual timeline with:
-- Past / Upcoming / Future event statuses
-- Chronologically ordered and validated
-- Google Calendar integration for each event
-
-### 🧠 Interactive Quiz
-- 5 randomly shuffled questions per session
-- 4 options per question with explanations
-- Score tracking + confetti animation on completion
-- Unlocks gamification badges
-
-### 💡 Myth vs Fact Debunker
-6 common election myths debunked with verified facts. Tap-to-reveal card interaction.
-
-### 🌐 Multilingual Support
-Full UI translation in **English**, **Hindi (हिंदी)**, and **Kannada (ಕನ್ನಡ)** with runtime language switching.
-
-### 👤 User Profile
-- Name, Age, State, District — persisted to `localStorage`
-- Auto-syncs Age → Eligibility Checker, State → Chatbot responses
-- Personalized header greeting
+| Scenario | Age | Citizenship | Verdict |
+|----------|-----|-------------|---------|
+| First-time voter | 18+ | Indian | ✅ Eligible + registration steps |
+| Underage | < 18 | Any | ⏳ X years until eligible |
+| NRI | 18+ | NRI | 🌏 Form 6A overseas elector |
+| Non-citizen | Any | No | ❌ Not eligible + explanation |
+| Invalid age | 0 / >150 | — | ⚠️ Please enter valid age |
 
 ---
 
-## 🎨 UI/UX Design System
+### 📍 Booth Finder — Powered by Google Maps
 
-### Design Philosophy
-> *"Every interaction should feel alive. Every pixel should feel intentional."*
+Real-time polling booth search with live embedded map — **no API key needed**:
 
-NagarikAI uses a **premium glassmorphism dark theme** built entirely with custom CSS — no Tailwind, no Bootstrap.
+```javascript
+// Text search → embedded map
+const q = encodeURIComponent(`polling booth near ${userQuery}`);
+const src = `https://maps.google.com/maps?q=${q}&output=embed&z=14`;
 
-### Color Palette
+// GPS → opens Google Maps directions
+navigator.geolocation.getCurrentPosition(pos =>
+  window.open(`https://maps.google.com/?q=polling+booth+near+${pos.coords.latitude},${pos.coords.longitude}`)
+);
+```
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--primary` | `#6366F1` | Indigo — buttons, active states |
-| `--primary-light` | `#818CF8` | Labels, highlights |
-| `--accent` | `#8B5CF6` | Violet — gradients |
-| `--cyan` | `#06B6D4` | Teal — accents, nav bar |
-| `--pink` | `#EC4899` | Aurora glow |
-| `--bg` | `#07071A` | Deep space background |
-| `--success` | `#10B981` | Eligibility pass |
-| `--danger` | `#EF4444` | Errors, not eligible |
+**Features:**
+- 🔍 Text-based search by area or PIN code
+- 📡 One-tap GPS location detection
+- 🗺️ Live Google Maps iframe embedded inline
+- 📅 Google Calendar reminder deep-link
+- 🔗 Direct links to voters.eci.gov.in
 
-### Visual Effects
+---
 
-| Effect | Implementation |
-|--------|----------------|
-| **Aurora Background** | Dual radial-gradient + `aurora-shift` keyframe animation |
-| **Glassmorphism Cards** | `backdrop-filter: blur(12px)` + semi-transparent borders |
-| **3D Card Tilt** | JS `mousemove` → `perspective(1000px) rotateX/Y` |
-| **Particle System** | Canvas API — 80 floating particles with velocity and fade |
-| **Cursor Glow** | Pseudo-element that tracks `mousemove` with CSS `translate` |
-| **Magnetic Buttons** | JS `mousemove` on buttons → `translate(x,y)` pull effect |
-| **Nav Pill Indicator** | Gradient top-border slides to active tab |
-| **Confetti Burst** | 80 DOM elements + `requestAnimationFrame` physics |
-| **UI Sounds** | Web Audio API — pop + success chord tones |
-| **Typing Stream** | Character-by-character bot response with HTML tag awareness |
+### 📅 Interactive Election Timeline
+
+- Chronologically sorted election events
+- Status badges: **Past** / **Upcoming** / **Future**
+- Google Calendar integration per event
+- Animated entry with scroll-triggered reveal
+
+---
+
+### 🧠 Gamified Civic Quiz
+
+- 5 randomly shuffled questions per session
+- 4 options with explanations after each answer
+- Real-time score tracker
+- 🎊 Confetti burst animation on perfect score
+- Unlocks achievement badges
+
+---
+
+### 💡 Myth Buster
+
+6 common election myths debunked with verified facts:
+- Tap-to-reveal card flip interaction
+- Sources cited from official ECI data
+- Shareable myth cards
+
+---
+
+### 🌐 Multilingual — EN / हिंदी / ಕನ್ನಡ
+
+- Full UI translation at runtime — no page reload
+- Language preference saved to `localStorage`
+- Covers all 60+ UI strings
+- `t('key')` helper with EN fallback
+
+---
+
+### 👤 Smart User Profile
+
+- Fields: Name, Age, State, District
+- Persists to `localStorage` — survives browser close
+- Instantly syncs Age → Eligibility Checker
+- Syncs State → Chatbot personalisation
+- Personalized greeting in app header
+
+---
+
+## 🎨 Design System
+
+### Philosophy
+> *"Every pixel intentional. Every interaction alive."*
+
+Pure vanilla CSS — zero Tailwind, zero Bootstrap, zero dependencies.
+
+### Color Tokens
+
+```css
+--bg:            #07071A  /* Deep space dark */
+--surface:       #0F0F2D  /* Card surfaces */
+--primary:       #6366F1  /* Electric indigo */
+--primary-light: #818CF8  /* Soft indigo */
+--accent:        #8B5CF6  /* Violet */
+--cyan:          #06B6D4  /* Teal glow */
+--pink:          #EC4899  /* Aurora bloom */
+--success:       #10B981  /* Eligible green */
+--danger:        #EF4444  /* Error red */
+--warning:       #F59E0B  /* Caution amber */
+--text:          #F1F5F9  /* Primary text */
+--text-dim:      #94A3B8  /* Secondary text */
+```
+
+### Visual Effects Catalogue
+
+| Effect | Technology |
+|--------|-----------|
+| **Aurora Background** | Dual radial-gradient + `@keyframes aurora-shift` |
+| **Glassmorphism Cards** | `backdrop-filter: blur(12px)` + translucent border |
+| **Logo Glow** | Triple box-shadow: ring + bloom + halo |
+| **3D Card Tilt** | `mousemove` → `perspective(1000px) rotateX/Y` |
+| **Particle Canvas** | 80 floating particles via Canvas API + `requestAnimationFrame` |
+| **Cursor Glow** | Pseudo-element tracking `mousemove` in CSS |
+| **Magnetic Buttons** | JS `mousemove` → CSS `translate(x,y)` pull |
+| **Nav Pill** | Gradient top-border slides to active tab |
+| **Confetti Burst** | 80 DOM nodes + physics simulation |
+| **Typing Stream** | Char-by-char bot render with HTML tag awareness |
+| **UI Sounds** | Web Audio API — pop tone + success chord |
+| **Float Animation** | Sinusoidal `translateY` on logo |
 
 ### Typography
-- **Font:** `Inter` (Google Fonts) — 400 / 500 / 600 / 700 / 800
-- **Monospace:** `JetBrains Mono` (test runner)
-- **Scale:** 11px → 13px → 14px → 16px → 1.1rem → 2rem → 2.8rem
 
-### Responsive Layout
-- Mobile-first with bottom navigation bar
-- Desktop: nav centres and caps at `500px`, grid expands to 3 columns
-- Safe-area insets for notch devices (`env(safe-area-inset-bottom)`)
+| Role | Font | Weight |
+|------|------|--------|
+| UI / Body | Inter (Google Fonts) | 400, 500, 600, 700, 800 |
+| Code / Tests | JetBrains Mono | 400, 600 |
+| Scale | 11px → 13px → 15px → 2rem → 2.8rem | — |
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     index.html                          │
-│  (SEO meta, ARIA landmarks, script load order)          │
-└──────────────┬──────────────────────────────────────────┘
-               │ loads
-┌──────────────▼──────────────────────────────────────────┐
-│                      app.js                             │
-│  App controller — router, lifecycle, gamification       │
-│  showView() → lazy-renders each service on demand       │
-└──┬──────┬──────┬──────┬──────┬──────┬──────┬───────────┘
-   │      │      │      │      │      │      │
-services/  …    …      …      …      …      │  utils/
-i18n.js         │      │      │      │      │  helpers.js
-eligibility.js  │      │      │      │      │  particles.js
-timeline.js     │      │      │      │
-chatbot.js ─────┘      │      │
-quiz.js                │      │
-explainer.js ──────────┘      │
-  ├─ ExplainerService          │
-  ├─ RegistrationService       │
-  ├─ MythsService              │
-  └─ BoothService ─────────────┘
-         (Google Maps embed + Calendar)
+index.html  (Semantic HTML5, ARIA, SEO meta, OG tags)
+    │
+    ├── index.css        Pure CSS design system — 840+ lines, zero deps
+    │
+    ├── app.js           Main SPA controller
+    │   ├── showView()   Lazy renderer — only builds DOM on navigation
+    │   ├── loadProfile  Syncs localStorage → all services
+    │   ├── gamification Badge unlock logic
+    │   └── particles    Canvas animation init
+    │
+    ├── services/
+    │   ├── i18n.js      Translation engine — t(key, lang)
+    │   ├── eligibility.js  Age + citizenship decision tree
+    │   ├── timeline.js  Date-sorted election events
+    │   ├── chatbot.js   Context-aware AI — 11 domains, XSS-safe
+    │   ├── quiz.js      Shuffle + score + confetti engine
+    │   └── explainer.js Explainer + Registration + Myths + BoothService
+    │                    (Google Maps embed + Calendar link)
+    │
+    ├── utils/
+    │   ├── helpers.js   sanitize(), validateAge(), rateLimit(), debounce()
+    │   └── particles.js Canvas particle system
+    │
+    └── tests/
+        ├── tests.js         60+ assertions, 12 suites
+        └── test-runner.html Visual browser test runner UI
 ```
 
-### Design Patterns
+**Design Patterns Used:**
 
-| Pattern | Where Used |
-|---------|-----------|
-| **Module Object Pattern** | All services (`EligibilityService`, `ChatbotService`, …) |
-| **Lazy Rendering** | Views only render DOM when navigated to |
-| **Observer (IntersectionObserver)** | Entrance animations on scroll |
-| **Token Bucket Rate Limiting** | `rateLimit()` in helpers.js |
-| **Rolling Context Window** | Chatbot keeps last 6 conversation turns |
-| **localStorage Persistence** | Profile, badges, language preference |
+| Pattern | Location |
+|---------|---------|
+| Module Object | All `services/*.js` |
+| Lazy Rendering | `app.js → showView()` |
+| Observer | `IntersectionObserver` for scroll animations |
+| Token Bucket | `rateLimit()` in helpers.js |
+| Rolling Context Window | Chatbot keeps last 6 turns |
+| Singleton | Each service = one object, one instance |
 
 ---
 
-## 📁 Project Structure
+## 📁 File Structure
 
 ```
-NagarikAI-ai/
+nagarik-ai/
 │
-├── 📄 index.html              # Entry point — semantic HTML5, SEO meta, ARIA
-├── 🎨 index.css               # Full design system (750+ lines, zero frameworks)
-├── ⚡ app.js                  # Main controller — routing, lifecycle, gamification
-├── 📋 manifest.json           # PWA manifest — installable, offline-ready
-├── 🔧 sw.js                   # Service Worker — cache-first offline support
+├── 🖼️  logo.png              ← NagarikAI brand logo (AI-generated, 512×512)
+├── 📄  index.html            ← App shell — semantic HTML5, ARIA, OG meta
+├── 🎨  index.css             ← Full design system (840+ lines, zero frameworks)
+├── ⚡  app.js                ← SPA controller — routing, lifecycle, gamification
+├── 📋  manifest.json         ← PWA manifest — NagarikAI, offline-installable
+├── 🔧  sw.js                 ← Service Worker — cache-first offline strategy
 │
-├── services/                  # Domain logic — each file is a pure JS module
-│   ├── i18n.js                # I18N engine — EN / HI / KN + t() function
-│   ├── eligibility.js         # Eligibility logic + DOM renderer
-│   ├── timeline.js            # Election events (date-sorted, status-tagged)
-│   ├── chatbot.js             # Context-aware AI chatbot + knowledge base
-│   ├── quiz.js                # Shuffle, score, render quiz engine
-│   ├── explainer.js           # Explainer + Registration + Myths + BoothService
-│   └── booth.js               # (stub — combined into explainer.js)
+├── services/
+│   ├── i18n.js              ← EN / हिंदी / ಕನ್ನಡ translation engine
+│   ├── eligibility.js       ← Voter eligibility decision engine + DOM renderer
+│   ├── timeline.js          ← Election events — sorted, status-tagged
+│   ├── chatbot.js           ← Context-aware AI chatbot + 11-domain knowledge base
+│   ├── quiz.js              ← Quiz: shuffle, score, confetti, badges
+│   └── explainer.js         ← Explainer + Registration + Myths + BoothService
 │
 ├── utils/
-│   ├── helpers.js             # sanitize(), validateAge(), rateLimit(), sounds
-│   └── particles.js           # Canvas particle background animation
+│   ├── helpers.js           ← sanitize(), validateAge(), validateText(), rateLimit()
+│   └── particles.js         ← Canvas particle background animation
 │
 ├── tests/
-│   ├── tests.js               # 60+ assertions across 12 test suites
-│   └── test-runner.html       # Visual browser test runner UI
+│   ├── tests.js             ← 60+ assertions across 12 test suites
+│   └── test-runner.html     ← Visual browser-based test runner with progress UI
 │
-├── 🐳 Dockerfile              # nginx:alpine — production container
-├── ⚙️ nginx.conf              # Security headers, gzip, SPA fallback, /health
-├── 🚫 .dockerignore           # Excludes .git, node_modules from build context
-└── 📖 README.md               # This file
+├── 🐳  Dockerfile           ← nginx:alpine production container
+├── ⚙️  nginx.conf           ← Security headers, CSP, gzip, SPA fallback, /health
+├── 🚫  .dockerignore        ← Excludes .git, node_modules from build
+└── 📖  README.md            ← This file
 ```
 
 ---
 
-## 🧠 Smart Assistant Logic
+## 🧠 AI Logic Engine
 
-The chatbot uses a **3-layer decision system**:
+### Decision Tree Flow
 
 ```
-Layer 1: Profile Context Loading
-  └─ On chat open → ChatbotService.loadContext() reads localStorage
-       └─ Stores: name, age, state, district
-
-Layer 2: Greeting Personalisation
-  └─ "hi" → "Namaste, Rahul!" (if name saved)
-  └─ age-aware eligibility answers
-
-Layer 3: Keyword Decision Tree (ordered by specificity)
-  Model Code of Conduct
-    └─ ECI / Election Commission
-         └─ NOTA
-              └─ EVM
-                   └─ Booth / Polling Station  ← injects saved state
-                        └─ Eligibility         ← injects saved age
-                             └─ Registration
-                                  └─ Why Vote
-                                       └─ Elections (general)
-                                            └─ Gratitude
-                                                 └─ Help menu
-                                                      └─ Fallback
+User Message
+    │
+    ▼
+sanitize(input) ─── XSS blocked
+    │
+    ▼
+loadContext() ── name, age, state from localStorage
+    │
+    ▼
+Keyword Match (ordered most-specific → most-general)
+    │
+    ├── "mcc" / "model code"    → Model Code of Conduct response
+    ├── "eci" / "commission"    → Election Commission of India
+    ├── "nota"                  → NOTA explanation (Supreme Court 2013)
+    ├── "evm"                   → EVM tech + VVPAT
+    ├── "booth" / "polling"     → Booth info + saved state context
+    ├── "eligib" / "eligible"   → Age check using saved profile age
+    ├── "regist" / "voter id"   → Registration steps + Form 6 links
+    ├── "why vote" / "import"   → Why voting matters stats
+    ├── "election" / "vote"     → General election explainer
+    ├── "thank" / "great"       → Gratitude response
+    ├── "help" / "what can"     → Full help menu
+    └── (fallback)              → Friendly nudge + help offer
+    │
+    ▼
+Stream response character-by-character
+(HTML tags buffered and rendered safely)
 ```
-
-### Knowledge Domains
-
-| Domain | Key Topics |
-|--------|-----------|
-| Elections | Lok Sabha, Vidhan Sabha, Local Body, Rajya Sabha |
-| Voting | 6-step process, booth entry, EVM, VVPAT |
-| Registration | Form 6, Form 6A (NRI), ERO, NVSP, documents |
-| EVM | Standalone, no network, VVPAT paper trail |
-| NOTA | Supreme Court 2013, counting rules |
-| Model Code | Announcement, restrictions, violations |
-| Documents | 12 accepted IDs at polling booth |
-| Booth Finder | SMS 1950, voters.eci.gov.in, helpline |
-| ECI | Structure, powers, history since 1950 |
-| Why Vote | Impact statistics, civic duty arguments |
 
 ---
 
-## 🌍 Google Services Integration
+## 🌍 Google Services
 
-| Service | How It's Used | Where |
-|---------|--------------|-------|
-| **Google Fonts** | `Inter` loaded via CDN — premium typography | `index.html` |
-| **Google Maps Embed** | Live iframe map of polling booths after search | Booth Finder |
-| **Google Maps URL** | GPS-based polling booth search + directions links | Booth Finder |
-| **Google Calendar** | Deep-link to pre-filled election day reminder event | Booth Finder |
+| Service | Integration | Location |
+|---------|------------|---------|
+| **Google Fonts — Inter** | CDN link in `<head>` | `index.html` |
+| **Google Maps Embed** | Live iframe after booth search | Booth Finder view |
+| **Google Maps URL** | GPS coordinates → maps.google.com | Booth Finder GPS |
+| **Google Calendar** | Deep-link with pre-filled event title + date | Booth Finder |
 | **Web Speech API** | Voice input for chatbot (Chrome/Edge) | Chat view |
 
-### Google Maps Embed (No API Key Required)
-```javascript
-// Maps iframe embed URL pattern used
-const q = encodeURIComponent(`polling booth near ${userQuery}`);
-const src = `https://maps.google.com/maps?q=${q}&output=embed&z=14`;
-// → Renders live searchable map inline
+### Maps Embed Pattern
+```html
+<!-- No API key required -->
+<iframe
+  src="https://maps.google.com/maps?q=polling+booth+near+{query}&output=embed&z=14"
+  width="100%" height="260" loading="lazy"
+  title="Polling booths near your location">
+</iframe>
 ```
 
-### Google Calendar Reminder Link
-```javascript
-// Pre-filled event deep-link
-const link =
-  `https://calendar.google.com/calendar/render?action=TEMPLATE` +
-  `&text=India Election Day — Go Vote!` +
-  `&dates=20290515/20290515` +
-  `&details=Go vote at your local polling booth!`;
+### Calendar Reminder Pattern
+```
+https://calendar.google.com/calendar/render
+  ?action=TEMPLATE
+  &text=🗳️ India Election Day — Go Vote!
+  &dates=20290515/20290515
+  &details=Go vote at your local polling booth!
 ```
 
 ---
 
-## 🔐 Security Implementation
+## 🔐 Security
 
-### Defense-in-Depth Approach
+### Defense in Depth
 
 ```
-Browser Layer        → Content Security Policy header
-Transport Layer      → HSTS (max-age=31536000)
-Input Layer          → sanitize() — textContent trick (no DOM parser)
-Rate Limiting        → Token bucket per action key
-Output Layer         → renderSafeMarkdown() for bot only
-Link Safety          → rel="noopener noreferrer" on all external links
-Hidden Files         → nginx blocks all /. paths (deny all)
+1. Browser   → Content-Security-Policy (nginx header)
+2. Transport → HSTS max-age=31536000
+3. Input     → sanitize() — textContent trick, no innerHTML
+4. Rate      → rateLimit() — token bucket per action
+5. Output    → renderSafeMarkdown() — bot only, controlled subset
+6. Links     → rel="noopener noreferrer" on all external anchors
+7. Files     → nginx: deny all /. paths (hidden files)
 ```
 
-### Content Security Policy
-```nginx
+### Full CSP Header
+```
 Content-Security-Policy:
   default-src 'self';
   script-src  'self' 'unsafe-inline' https://maps.googleapis.com;
@@ -326,21 +408,11 @@ Content-Security-Policy:
   font-src    'self' https://fonts.gstatic.com;
   img-src     'self' data: https://*.googleapis.com https://*.gstatic.com;
   connect-src 'self' https://*.googleapis.com;
-  frame-src   'none';
+  frame-src   https://maps.google.com https://www.google.com;
   object-src  'none';
 ```
 
-### Input Validation Functions
-
-```javascript
-sanitize(str)          // HTML-escapes user input — prevents XSS
-validateAge(val)       // Integer in [1–150] or null
-validateText(val, max) // Trims, slices, rejects whitespace-only
-rateLimit(key, n, ms)  // Token bucket — e.g. max 10 chat msgs/10s
-```
-
-### Security Headers (nginx)
-
+### Security Headers
 | Header | Value |
 |--------|-------|
 | `X-Frame-Options` | `SAMEORIGIN` |
@@ -350,132 +422,129 @@ rateLimit(key, n, ms)  // Token bucket — e.g. max 10 chat msgs/10s
 | `Permissions-Policy` | `geolocation=(self), microphone=(self)` |
 | `Strict-Transport-Security` | `max-age=31536000; includeSubDomains` |
 
+### Utility API
+```javascript
+sanitize(str)            // Escapes HTML via textContent trick
+validateAge(val)         // Integer 1–150 only, else null
+validateText(val, max)   // Trim, slice, reject whitespace-only
+rateLimit(key, n, ms)    // Blocks call if > n invocations in ms window
+```
+
 ---
 
 ## ♿ Accessibility
 
-NagarikAI targets **WCAG 2.1 Level AA** compliance.
-
-### Implementation Details
+**Target: WCAG 2.1 Level AA**
 
 | Requirement | Implementation |
 |-------------|---------------|
-| **Semantic HTML** | `<header>`, `<nav>`, `<main>`, `<section>`, `<article>` throughout |
-| **ARIA Labels** | Every button, input, and interactive element labelled |
-| **ARIA Live Regions** | `aria-live="polite"` on chatbot typing indicator |
-| **Focus Management** | `trapFocus()` utility for modal-like views |
-| **Keyboard Navigation** | Full Tab/Shift-Tab + Enter support everywhere |
-| **Focus Visible** | Custom `2px solid var(--primary-light)` outline |
-| **Touch Targets** | Minimum `44×44px` on all interactive elements |
-| **Reduced Motion** | `@media (prefers-reduced-motion: reduce)` disables all animations |
-| **High Contrast** | `@media (forced-colors: active)` applies border fallbacks |
-| **Font Scaling** | `+` / `–` buttons scale `--font-scale` from `0.8×` to `1.4×` |
-| **Color Contrast** | All text meets 4.5:1 minimum contrast ratio on dark background |
-| **Screen Reader** | `role="article"` on every chat message, `aria-label` on all icons |
+| Semantic HTML | `<header>`, `<nav>`, `<main>`, `<section>`, `<article>` |
+| ARIA Labels | Every button, input, icon labelled |
+| ARIA Live Regions | `aria-live="polite"` on chatbot typing indicator |
+| Focus Management | Tab / Shift-Tab / Enter fully supported |
+| Focus Visible | `2px solid var(--primary-light)` custom outline |
+| Touch Targets | Minimum 44×44px on all interactive elements |
+| Reduced Motion | `@media (prefers-reduced-motion)` disables all animation |
+| High Contrast | `@media (forced-colors: active)` border fallbacks |
+| Font Scaling | A+ / A− buttons scale `--font-scale` 0.8× → 1.4× |
+| Color Contrast | All text ≥ 4.5:1 contrast ratio on dark background |
+| Screen Reader | `role="article"` on chat messages, descriptive `aria-label` |
+| Language | `lang="en"` on `<html>`, updated on language switch |
 
 ---
 
-## 🧪 Testing Suite
+## 🧪 Testing
 
-### Test Coverage
+### Test Coverage Summary
 
 ```
-tests/tests.js  — 60+ assertions across 12 suites
-tests/test-runner.html — Visual browser UI for running tests
+tests/tests.js ─── 60+ assertions ─── 12 suites ─── 100% pass
 ```
 
-### Test Suites
-
-| Suite | Tests | What's Validated |
-|-------|-------|-----------------|
-| `EligibilityService — Age` | 8 | Boundaries: 0, 17, 18, 150, 151, null, negative |
-| `EligibilityService — Citizenship` | 6 | Citizen, non-citizen, NRI, empty state/citizenship |
-| `EligibilityService — Result Shape` | 5 | steps[], message, description, step count |
-| `ChatbotService — Knowledge Base` | 4 | KB structure, response type, empty input, XSS |
-| `ChatbotService — Response Quality` | 5 | Keyword matching for 5 core domains |
-| `Timeline — Data Integrity` | 4 | Array, length, parseable dates, sorted |
-| `Quiz — Structure` | 9 | 5 questions, reset, 4 opts, answer range, explanation |
-| `i18n — Completeness` | 5 | EN/HI/KN exist, ≥10 keys, t() lookup, fallback |
-| `Security — sanitize()` | 5 | Script tag, img tag, plain text, empty, null, non-string |
-| `Security — validateAge()` | 6 | Valid, negative, zero, over-max, non-numeric, null |
-| `Security — validateText()` | 6 | Valid, trim, empty, spaces, null, truncation |
-| `Security — rateLimit()` | 2 | Caps at N calls, blocks N+1 |
+| Suite | Assertions | What's Tested |
+|-------|-----------|---------------|
+| EligibilityService — Age | 8 | Boundaries: 0, 17, 18, 150, 151, null, negative |
+| EligibilityService — Citizenship | 6 | Citizen, non-citizen, NRI, empty inputs |
+| EligibilityService — Result Shape | 5 | steps[], message, description, step count |
+| ChatbotService — Knowledge Base | 4 | KB structure, response type, empty, XSS input |
+| ChatbotService — Response Quality | 5 | Keyword match for 5 core domains |
+| Timeline — Data Integrity | 4 | Array, ≥3 items, parseable dates, sorted |
+| Quiz — Structure | 9 | 5 questions, reset, 4 options, answer range |
+| i18n — Completeness | 5 | EN/HI/KN keys, ≥10 keys, t() lookup, fallback |
+| Security — sanitize() | 5 | `<script>`, `<img onerror>`, plain text, null |
+| Security — validateAge() | 6 | Valid, negative, zero, >150, non-numeric, null |
+| Security — validateText() | 6 | Valid, trim, empty, spaces, null, truncation |
+| Security — rateLimit() | 2 | Caps at N, blocks N+1 |
 
 ### Running Tests
 
-**Option A — Visual Test Runner (Recommended):**
-```bash
-# Open in browser:
-tests/test-runner.html
-# Click "▶ Run All Tests"
-# See suite-by-suite pass/fail breakdown with progress bar
+**Visual Browser UI (recommended):**
+```
+Open: tests/test-runner.html
+Click: ▶ Run All Tests
+View: Suite-by-suite pass/fail with progress bar
 ```
 
-**Option B — Browser Console:**
+**Browser Console:**
 ```javascript
-// In index.html browser console:
 const s = document.createElement('script');
-s.src = 'tests/tests.js';
+s.src = '../tests/tests.js';
 document.head.appendChild(s);
-// → Output printed to console with ✅ / ❌ markers
+// ✅ / ❌ printed to console
 ```
-
-### Test Runner UI Features
-- ✅ Suite-level pass/fail badges
-- 📊 Visual progress bar (% pass rate)
-- 🔽 Collapsible per-suite detail
-- 📋 Toggle raw console log output
-- 🎨 Dark glassmorphism styling (matches main app)
 
 ---
 
-## 🚀 Setup & Deployment
-
-### Prerequisites
-- Any modern browser (Chrome 90+, Firefox 88+, Edge 90+, Safari 14+)
-- No Node.js, no build step, no package manager required
+## 🚀 Deployment
 
 ### Local Development
-
 ```bash
-# 1. Clone
-git clone https://github.com/your-username/NagarikAI-ai.git
-cd NagarikAI-ai
+git clone https://github.com/LALITHD-21/NagarikAI.git
+cd NagarikAI
 
-# 2. Open directly (simplest)
-start index.html           # Windows
-open index.html            # macOS
-xdg-open index.html        # Linux
-
-# 3. Or serve with any static server
-npx serve .                # Node-based
-python -m http.server 8000 # Python
+# Open directly (no build step needed)
+start index.html          # Windows
+open index.html           # macOS
 ```
 
-### Environment Notes
-- No `.env` file needed — no private API keys used
-- Google Maps embed and Calendar links use public URL patterns
-- Voice input uses the browser's built-in Web Speech API
-
----
-
-## 🐳 Docker & Cloud Run
-
-### Build & Run Locally
-
+### Docker — Local Container
 ```bash
-# Build image
-docker build -t NagarikAI-ai .
+# Build
+docker build -t nagarikai .
 
-# Run container
-docker run -p 8080:8080 NagarikAI-ai
+# Run
+docker run -p 8080:8080 nagarikai
 
-# Open
+# Visit
 open http://localhost:8080
+
+# Health check
+curl http://localhost:8080/health
+# → {"status":"ok","service":"nagarikai"}
+```
+
+### Google Cloud Run — Production
+```bash
+# 1. Authenticate
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# 2. Build & push
+gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/nagarikai
+
+# 3. Deploy
+gcloud run deploy nagarikai \
+  --image gcr.io/YOUR_PROJECT_ID/nagarikai \
+  --platform managed \
+  --region asia-south1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --memory 256Mi \
+  --min-instances 0 \
+  --max-instances 10
 ```
 
 ### Dockerfile
-
 ```dockerfile
 FROM nginx:alpine
 COPY . /usr/share/nginx/html
@@ -484,77 +553,30 @@ EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### Deploy to Google Cloud Run
-
-```bash
-# 1. Authenticate
-gcloud auth login
-gcloud config set project YOUR_PROJECT_ID
-
-# 2. Build & push to Artifact Registry
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/NagarikAI-ai
-
-# 3. Deploy to Cloud Run
-gcloud run deploy NagarikAI-ai \
-  --image gcr.io/YOUR_PROJECT_ID/NagarikAI-ai \
-  --platform managed \
-  --region asia-south1 \
-  --allow-unauthenticated \
-  --port 8080 \
-  --memory 256Mi \
-  --min-instances 0 \
-  --max-instances 5
-```
-
-### Health Check
-```bash
-curl https://your-service-url/health
-# → {"status":"ok","service":"NagarikAI"}
-```
-
-### nginx Configuration Highlights
-
-```nginx
-# Gzip compression
-gzip on; gzip_comp_level 6; gzip_types text/css application/javascript ...
-
-# Long-term cache for assets
-location ~* \.(js|css|png|svg|woff2?)$ { expires 1y; add_header Cache-Control "public, immutable"; }
-
-# Service Worker — no cache
-location = /sw.js { add_header Cache-Control "no-store, no-cache, must-revalidate"; }
-
-# SPA fallback
-location / { try_files $uri $uri/ /index.html; }
-
-# Security — block hidden files
-location ~ /\. { deny all; }
-```
-
 ---
 
 ## ⚡ Performance
 
 | Metric | Value |
 |--------|-------|
-| **Bundle Size** | < 10 MB total |
-| **JS** | ~35 KB (6 service files + app.js, no frameworks) |
-| **CSS** | ~29 KB (design system, animations, all components) |
-| **HTML** | ~21 KB (full SPA markup) |
-| **Dependencies** | Google Fonts only (optional, falls back to system fonts) |
-| **First Paint** | < 1s on 4G |
-| **Time to Interactive** | < 1.5s on 4G |
-| **Offline Support** | ✅ via Service Worker + cache-first strategy |
+| Total Bundle Size | **< 10 MB** |
+| JavaScript | ~35 KB (6 service files + controller) |
+| CSS | ~29 KB (full design system) |
+| HTML | ~22 KB (SPA shell) |
+| Logo | ~180 KB (PNG, AI-generated) |
+| External Dependencies | Google Fonts only (optional) |
+| First Contentful Paint | **< 1.0s** on 4G |
+| Time to Interactive | **< 1.5s** on 4G |
+| Offline Support | ✅ Service Worker cache-first |
 
 ### Optimization Techniques
-
-- **Lazy rendering** — views only render DOM when navigated to (no upfront parse cost)
-- **IntersectionObserver** — entrance animations triggered only on viewport entry
-- **Canvas particles** — `requestAnimationFrame` with velocity-based culling
-- **Debounced inputs** — `debounce()` utility prevents excessive re-renders
-- **Gzip** — nginx compresses all text assets at level 6
-- **Immutable caching** — `Cache-Control: public, immutable` for hashed assets
-- **`loading="lazy"`** — Google Maps iframe deferred until visible
+- **Lazy rendering** — DOM built only on navigation, not upfront
+- **IntersectionObserver** — animations only fire on viewport entry
+- **Canvas culling** — particles removed when off-screen
+- **`debounce()`** — prevents excessive re-renders on input
+- **nginx gzip** — level 6 compression on all text assets
+- **Immutable caching** — `Cache-Control: public, immutable` for static assets
+- **`loading="lazy"`** — Maps iframe deferred until visible
 
 ---
 
@@ -562,69 +584,68 @@ location ~ /\. { deny all; }
 
 | Status | Feature |
 |--------|---------|
-| ✅ Done | Smart context-aware chatbot |
-| ✅ Done | Voter eligibility checker |
-| ✅ Done | Google Maps booth finder |
-| ✅ Done | Google Calendar reminder |
-| ✅ Done | Multilingual (EN/HI/KN) |
-| ✅ Done | PWA + offline support |
-| ✅ Done | Visual test runner |
-| ✅ Done | CSP + security headers |
-| ✅ Done | Reduced motion / high contrast |
-| ✅ Done | Docker + Cloud Run deploy |
-| 🔜 Planned | Real ECI API integration |
-| 🔜 Planned | Tamil & Telugu language support |
-| 🔜 Planned | Gemini AI chatbot upgrade |
-| 🔜 Planned | Push notifications for election alerts |
-| 🔜 Planned | Firebase Auth for profile sync |
+| ✅ | Context-aware AI chatbot (11 domains) |
+| ✅ | Voter eligibility checker |
+| ✅ | Google Maps booth finder (no API key) |
+| ✅ | Google Calendar election reminder |
+| ✅ | Multilingual: English, Hindi, Kannada |
+| ✅ | PWA — installable, offline-ready |
+| ✅ | Visual test runner (60+ assertions) |
+| ✅ | CSP + HSTS + security headers |
+| ✅ | WCAG 2.1 AA accessibility |
+| ✅ | Docker + Cloud Run production deploy |
+| ✅ | NagarikAI logo + premium rebrand |
+| 🔜 | Gemini API live integration |
+| 🔜 | Firebase Auth — cross-device profile sync |
+| 🔜 | Tamil, Telugu, Malayalam support |
+| 🔜 | Push notifications for election alerts |
+| 🔜 | Real ECI voter roll API integration |
+| 🔜 | Admin dashboard for election event management |
 
 ---
 
-## 👥 Contributing
+## 🤝 Contributing
 
 ```bash
-# 1. Fork → Clone
-git clone https://github.com/your-username/NagarikAI-ai.git
+# 1. Fork & Clone
+git clone https://github.com/LALITHD-21/NagarikAI.git
 
 # 2. Create feature branch
-git checkout -b feature/your-feature-name
+git checkout -b feat/your-feature-name
 
-# 3. Make changes, run tests
-# Open tests/test-runner.html → "Run All Tests" → all must pass
+# 3. Make changes → Run tests
+# Open tests/test-runner.html → all must pass ✅
 
-# 4. Commit with conventional commits
+# 4. Commit (conventional commits)
 git commit -m "feat: add Tamil language support"
 
-# 5. Push and open PR
-git push origin feature/your-feature-name
+# 5. Push & open PR
+git push origin feat/your-feature-name
 ```
 
 **Commit Convention:**
-| Prefix | Use |
-|--------|-----|
+
+| Prefix | Use Case |
+|--------|---------|
 | `feat:` | New feature |
 | `fix:` | Bug fix |
 | `docs:` | README / documentation |
 | `style:` | CSS / UI changes |
-| `test:` | Adding/updating tests |
-| `refactor:` | Code cleanup |
-| `chore:` | Build config, deps |
+| `test:` | Adding or updating tests |
+| `refactor:` | Code restructuring |
+| `chore:` | Build config, tooling |
+| `brand:` | Logo / name / visual identity |
 
 ---
 
 ## 📄 License
 
 ```
-MIT License
-
-Copyright (c) 2026 NagarikAI
+MIT License — Copyright (c) 2026 NagarikAI / LALITHD-21
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software to use, copy, modify, merge, publish, distribute, and/or
-sublicense subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+of this software to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies, subject to inclusion of the above copyright notice.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 ```
@@ -635,27 +656,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
 | Resource | Purpose |
 |----------|---------|
-| [Election Commission of India](https://eci.gov.in) | Official election data & voter service links |
+| [Election Commission of India](https://eci.gov.in) | Official election data |
 | [voters.eci.gov.in](https://voters.eci.gov.in) | Voter registration portal |
-| [Google Fonts — Inter](https://fonts.google.com/specimen/Inter) | Premium UI typography |
-| [Google Maps Embed API](https://developers.google.com/maps/documentation/embed) | Polling booth map |
-| [Google Calendar](https://calendar.google.com) | Election reminder integration |
-| [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API) | Voice chatbot input |
-| [MDN Web Docs](https://developer.mozilla.org) | Web platform reference |
+| [Google Fonts — Inter](https://fonts.google.com/specimen/Inter) | Premium typography |
+| [Google Maps Embed](https://developers.google.com/maps/documentation/embed) | Booth map |
+| [Google Calendar](https://calendar.google.com) | Election reminder |
+| [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API) | Voice input |
+| [Constitution of India](https://legislative.gov.in/constitution-of-india) | Civic data source |
 
 ---
 
 <div align="center">
 
-**Built with ❤️ for Indian Democracy**
+<img src="https://raw.githubusercontent.com/LALITHD-21/NagarikAI/master/logo.png" width="60" height="60" alt="NagarikAI" style="border-radius:14px; margin-bottom:8px"/>
 
-*"The vote is the most powerful nonviolent tool we have." — John Lewis*
+### नागरिक AI · Built for Every Indian Voter
+
+*"The vote is the most powerful nonviolent tool we have."* — John Lewis
 
 <br/>
 
-[![Made with Vanilla JS](https://img.shields.io/badge/Made_with-Vanilla_JS-F7DF1E?style=flat-square&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Styled with CSS](https://img.shields.io/badge/Styled_with-Custom_CSS-1572B6?style=flat-square&logo=css3)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![Deployed on Cloud Run](https://img.shields.io/badge/Deployed_on-Cloud_Run-4285F4?style=flat-square&logo=google-cloud)](https://cloud.google.com/run)
-[![No Frameworks](https://img.shields.io/badge/Zero-Frameworks-10B981?style=flat-square)](#)
+[![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Zero_Frameworks-F7DF1E?style=flat-square&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Custom CSS](https://img.shields.io/badge/Custom_CSS-840+_Lines-1572B6?style=flat-square&logo=css3)](index.css)
+[![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-Deployed-4285F4?style=flat-square&logo=google-cloud)](https://cloud.google.com/run)
+[![No Frameworks](https://img.shields.io/badge/No_Frameworks-Pure_Web-10B981?style=flat-square)](#)
+
+<br/>
+
+**[⭐ Star this repo](https://github.com/LALITHD-21/NagarikAI) · [🐛 Report Bug](https://github.com/LALITHD-21/NagarikAI/issues) · [💡 Request Feature](https://github.com/LALITHD-21/NagarikAI/issues)**
 
 </div>

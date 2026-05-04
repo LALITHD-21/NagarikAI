@@ -1,0 +1,1 @@
+/* Booth service is combined with explainer.js */

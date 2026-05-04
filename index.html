@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CivicPulse AI - Your smart election guide. Learn about elections, check voter eligibility, find polling booths, and get step-by-step registration help.">
+  <meta name="keywords" content="election, voting, civic assistant, voter registration, India elections, polling booth">
+  <meta name="theme-color" content="#6366F1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>CivicPulse AI — Smart Election Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="app" role="main">
+    <!-- Animated Background -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+    <div id="cursor-glow" aria-hidden="true"></div>
+
+    <!-- Top Controls -->
+    <div class="top-controls" role="navigation" aria-label="Top Controls">
+      <div class="font-scaler">
+        <button id="font-dec" class="font-btn" aria-label="Decrease font size">A-</button>
+        <button id="font-inc" class="font-btn" aria-label="Increase font size">A+</button>
+      </div>
+      <div class="lang-selector" aria-label="Language selection">
+        <button class="lang-btn active" data-lang="en" aria-label="English" id="lang-en">EN</button>
+        <button class="lang-btn" data-lang="hi" aria-label="Hindi" id="lang-hi">हि</button>
+        <button class="lang-btn" data-lang="kn" aria-label="Kannada" id="lang-kn">ಕ</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation" id="main-nav">
+      <button class="nav-item active" data-view="home" aria-label="Home" id="nav-home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span data-i18n="nav.home">Home</span>
+      </button>
+      <button class="nav-item" data-view="chat" aria-label="Chat Assistant" id="nav-chat">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span data-i18n="nav.chat">Chat</span>
+      </button>
+      <button class="nav-item" data-view="eligibility" aria-label="Check Eligibility" id="nav-eligibility">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span data-i18n="nav.eligibility">Eligibility</span>
+      </button>
+      <button class="nav-item" data-view="timeline" aria-label="Election Timeline" id="nav-timeline">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span data-i18n="nav.timeline">Timeline</span>
+      </button>
+      <button class="nav-item" data-view="quiz" aria-label="Quick Quiz" id="nav-quiz">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span data-i18n="nav.quiz">Quiz</span>
+      </button>
+      <button class="nav-item" data-view="profile" aria-label="User Profile" id="nav-profile">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span data-i18n="nav.profile">Profile</span>
+      </button>
+    </nav>
+
+    <!-- Views Container -->
+    <div class="views-container" id="views-container">
+
+      <!-- HOME VIEW -->
+      <section class="view active" id="view-home" aria-label="Home">
+        <header class="hero">
+          <div class="hero-badge">🇮🇳 AI-Powered</div>
+          <h1 class="hero-title">
+            <span class="gradient-text glitch" data-text="CivicPulse">CivicPulse</span> AI
+          </h1>
+          <p class="hero-subtitle" data-i18n="home.subtitle">Your Smart Election Guide — Learn, Check & Vote with Confidence</p>
+        </header>
+
+        <!-- Live Countdown -->
+        <div class="countdown-card glass-card" aria-label="Election Countdown">
+          <div class="countdown-title" data-i18n="home.countdownTitle">⏳ Time until Next Major Election</div>
+          <div class="countdown-timer" id="countdown-timer">
+            <div class="cd-box"><span class="cd-num" id="cd-days">00</span><span class="cd-label" data-i18n="home.cdDays">Days</span></div><span class="cd-colon">:</span>
+            <div class="cd-box"><span class="cd-num" id="cd-hours">00</span><span class="cd-label" data-i18n="home.cdHours">Hours</span></div><span class="cd-colon">:</span>
+            <div class="cd-box"><span class="cd-num" id="cd-mins">00</span><span class="cd-label" data-i18n="home.cdMins">Mins</span></div><span class="cd-colon">:</span>
+            <div class="cd-box"><span class="cd-num" id="cd-secs">00</span><span class="cd-label" data-i18n="home.cdSecs">Secs</span></div>
+          </div>
+        </div>
+
+        <!-- Civic Badges -->
+        <div class="badges-section glass-card" aria-label="Your Civic Badges">
+          <div class="badges-title" data-i18n="home.badgesTitle">🏆 Your Civic Badges</div>
+          <div class="badges-list" id="badges-list">
+             <div class="civic-badge locked" id="badge-eligible" title="Checked Eligibility"><div class="badge-icon">✅</div></div>
+             <div class="civic-badge locked" id="badge-quiz" title="Aced the Quiz"><div class="badge-icon">🧠</div></div>
+             <div class="civic-badge locked" id="badge-myths" title="Myth Buster"><div class="badge-icon">💡</div></div>
+             <div class="civic-badge locked" id="badge-chat" title="AI Explorer"><div class="badge-icon">💬</div></div>
+          </div>
+        </div>
+
+        <div class="feature-grid" id="feature-grid">
+          <button class="feature-card" data-action="explainer" id="feat-explainer" aria-label="Election Explainer">
+            <div class="card-icon">🗳️</div>
+            <h3 data-i18n="home.explainer">Election Explainer</h3>
+            <p data-i18n="home.explainerDesc">Learn how elections work step-by-step</p>
+            <div class="card-arrow">→</div>
+          </button>
+          <button class="feature-card" data-action="eligibility" id="feat-eligibility" aria-label="Eligibility Check">
+            <div class="card-icon">✅</div>
+            <h3 data-i18n="home.eligibility">Eligibility Check</h3>
+            <p data-i18n="home.eligibilityDesc">Find out if you can vote today</p>
+            <div class="card-arrow">→</div>
+          </button>
+          <button class="feature-card" data-action="registration" id="feat-registration" aria-label="Registration Guide">
+            <div class="card-icon">📝</div>
+            <h3 data-i18n="home.registration">Registration Guide</h3>
+            <p data-i18n="home.registrationDesc">Step-by-step voter registration</p>
+            <div class="card-arrow">→</div>
+          </button>
+          <button class="feature-card" data-action="booth" id="feat-booth" aria-label="Find Polling Booth">
+            <div class="card-icon">📍</div>
+            <h3 data-i18n="home.booth">Polling Booth Finder</h3>
+            <p data-i18n="home.boothDesc">Locate your nearest polling station</p>
+            <div class="card-arrow">→</div>
+          </button>
+          <button class="feature-card" data-action="timeline" id="feat-timeline" aria-label="Election Timeline">
+            <div class="card-icon">📅</div>
+            <h3 data-i18n="home.timeline">Election Timeline</h3>
+            <p data-i18n="home.timelineDesc">Key dates and deadlines</p>
+            <div class="card-arrow">→</div>
+          </button>
+          <button class="feature-card" data-action="myths" id="feat-myths" aria-label="Myth vs Fact">
+            <div class="card-icon">💡</div>
+            <h3 data-i18n="home.myths">Myth vs Fact</h3>
+            <p data-i18n="home.mythsDesc">Bust common election myths</p>
+            <div class="card-arrow">→</div>
+          </button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-bar">
+          <div class="stat"><span class="stat-num" id="stat-voters">96.8Cr</span><span class="stat-label" data-i18n="home.statVoters">Registered Voters</span></div>
+          <div class="stat"><span class="stat-num" id="stat-booths">10.5L</span><span class="stat-label" data-i18n="home.statBooths">Polling Stations</span></div>
+          <div class="stat"><span class="stat-num" id="stat-turnout">67.4%</span><span class="stat-label" data-i18n="home.statTurnout">Avg Turnout</span></div>
+        </div>
+      </section>
+
+      <!-- CHAT VIEW -->
+      <section class="view" id="view-chat" aria-label="Chat Assistant">
+        <div class="chat-header">
+          <div class="chat-avatar">🤖</div>
+          <div style="flex: 1;">
+            <h2>CivicPulse AI</h2>
+            <span class="chat-status" data-i18n="chat.online">Online</span>
+          </div>
+          <button id="chat-tts-toggle" class="icon-btn" aria-label="Toggle text to speech" title="Mute/Unmute Bot">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+          </button>
+        </div>
+        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages"></div>
+        <div class="chat-suggestions" id="chat-suggestions"></div>
+        <div class="chat-input-area">
+          <input type="text" id="chat-input" placeholder="Ask me anything about elections..." aria-label="Type your message" data-i18n-placeholder="chat.placeholder" autocomplete="off">
+          <button id="chat-send" aria-label="Send message" class="send-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+          <button id="chat-voice" aria-label="Voice input" class="voice-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ELIGIBILITY VIEW -->
+      <section class="view" id="view-eligibility" aria-label="Eligibility Checker">
+        <div class="view-header">
+          <h2 class="gradient-text" data-i18n="eligibility.title">Check Your Eligibility</h2>
+          <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+            <div class="progress-fill" id="elig-progress" style="width:33%"></div>
+            <span class="progress-text" id="elig-step">Step 1 of 3</span>
+          </div>
+        </div>
+
+        <div class="elig-steps" id="elig-steps">
+          <!-- Step 1: Age -->
+          <div class="elig-step active" data-step="1">
+            <div class="glass-card">
+              <label for="elig-age" class="form-label" data-i18n="eligibility.ageLabel">How old are you?</label>
+              <div class="age-input-wrap">
+                <button class="age-btn" id="age-dec" aria-label="Decrease age">−</button>
+                <input type="number" id="elig-age" min="1" max="120" value="18" class="age-input" aria-label="Age">
+                <button class="age-btn" id="age-inc" aria-label="Increase age">+</button>
+              </div>
+              <button class="primary-btn" id="elig-next-1" data-i18n="eligibility.next">Next →</button>
+            </div>
+          </div>
+          <!-- Step 2: Citizenship -->
+          <div class="elig-step" data-step="2">
+            <div class="glass-card">
+              <label class="form-label" data-i18n="eligibility.citizenLabel">Are you an Indian citizen?</label>
+              <div class="radio-group" role="radiogroup">
+                <label class="radio-option"><input type="radio" name="citizen" value="yes" checked> <span data-i18n="eligibility.yes">Yes, Indian Citizen</span></label>
+                <label class="radio-option"><input type="radio" name="citizen" value="nri"> <span data-i18n="eligibility.nri">NRI (Non-Resident Indian)</span></label>
+                <label class="radio-option"><input type="radio" name="citizen" value="no"> <span data-i18n="eligibility.no">No</span></label>
+              </div>
+              <div class="btn-row">
+                <button class="secondary-btn" id="elig-back-2" data-i18n="eligibility.back">← Back</button>
+                <button class="primary-btn" id="elig-next-2" data-i18n="eligibility.next">Next →</button>
+              </div>
+            </div>
+          </div>
+          <!-- Step 3: State -->
+          <div class="elig-step" data-step="3">
+            <div class="glass-card">
+              <label for="elig-state" class="form-label" data-i18n="eligibility.stateLabel">Select your State/UT</label>
+              <select id="elig-state" class="select-input" aria-label="Select state">
+                <option value="">-- Select --</option>
+                <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option>
+                <option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option>
+                <option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+                <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+                <option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+                <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+                <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+                <option>Delhi</option><option>Jammu & Kashmir</option><option>Ladakh</option>
+              </select>
+              <div class="btn-row">
+                <button class="secondary-btn" id="elig-back-3" data-i18n="eligibility.back">← Back</button>
+                <button class="primary-btn" id="elig-check" data-i18n="eligibility.check">Check Eligibility ✓</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="elig-result hidden" id="elig-result"></div>
+      </section>
+
+      <!-- TIMELINE VIEW -->
+      <section class="view" id="view-timeline" aria-label="Election Timeline">
+        <div class="view-header">
+          <h2 class="gradient-text" data-i18n="timeline.title">Election Timeline 2026</h2>
+        </div>
+        <div class="timeline" id="timeline-container"></div>
+      </section>
+
+      <!-- QUIZ VIEW -->
+      <section class="view" id="view-quiz" aria-label="Quick Quiz">
+        <div class="view-header">
+          <h2 class="gradient-text" data-i18n="quiz.title">Test Your Knowledge</h2>
+          <div class="quiz-score" id="quiz-score">Score: <span id="score-val">0</span>/5</div>
+        </div>
+        <div class="quiz-container" id="quiz-container"></div>
+      </section>
+
+      <!-- EXPLAINER VIEW -->
+      <section class="view" id="view-explainer" aria-label="Election Explainer">
+        <div class="view-header">
+          <button class="back-btn" id="explainer-back" aria-label="Go back">← Back</button>
+          <h2 class="gradient-text" data-i18n="explainer.title">How Elections Work</h2>
+        </div>
+        <div class="explainer-content" id="explainer-content"></div>
+      </section>
+
+      <!-- REGISTRATION VIEW -->
+      <section class="view" id="view-registration" aria-label="Registration Guide">
+        <div class="view-header">
+          <button class="back-btn" id="reg-back" aria-label="Go back">← Back</button>
+          <h2 class="gradient-text" data-i18n="registration.title">Voter Registration Guide</h2>
+        </div>
+        <div class="reg-content" id="reg-content"></div>
+      </section>
+
+      <!-- MYTHS VIEW -->
+      <section class="view" id="view-myths" aria-label="Myth vs Fact">
+        <div class="view-header">
+          <button class="back-btn" id="myths-back" aria-label="Go back">← Back</button>
+          <h2 class="gradient-text" data-i18n="myths.title">Myth vs Fact</h2>
+        </div>
+        <div class="myths-content" id="myths-content"></div>
+      </section>
+
+      <!-- BOOTH FINDER VIEW -->
+      <section class="view" id="view-booth" aria-label="Polling Booth Finder">
+        <div class="view-header">
+          <button class="back-btn" id="booth-back" aria-label="Go back">← Back</button>
+          <h2 class="gradient-text" data-i18n="booth.title">Find Your Polling Booth</h2>
+        </div>
+        <div class="booth-content" id="booth-content"></div>
+      </section>
+
+      <!-- PROFILE VIEW -->
+      <section class="view" id="view-profile" aria-label="User Profile">
+        <div class="view-header">
+          <h2 class="gradient-text" data-i18n="profile.title">Your Profile</h2>
+        </div>
+        <div class="profile-container glass-card" id="profile-container">
+          <div class="profile-avatar-wrapper">
+            <div class="profile-avatar">👤</div>
+          </div>
+          <form id="profile-form">
+            <div class="form-group">
+              <label for="profile-name" class="form-label" data-i18n="profile.nameLabel">Full Name</label>
+              <input type="text" id="profile-name" class="text-input" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label for="profile-age" class="form-label" data-i18n="profile.ageLabel">Age</label>
+              <input type="number" id="profile-age" class="text-input" min="18" max="120" placeholder="e.g. 25" required>
+            </div>
+            <div class="form-group">
+              <label for="profile-state" class="form-label" data-i18n="profile.stateLabel">State/UT</label>
+              <select id="profile-state" class="select-input" required>
+                <option value="">-- Select --</option>
+                <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option><option>Bihar</option>
+                <option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option><option>Haryana</option>
+                <option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+                <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option><option>Meghalaya</option>
+                <option>Mizoram</option><option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+                <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+                <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+                <option>Delhi</option><option>Jammu & Kashmir</option><option>Ladakh</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="profile-district" class="form-label" data-i18n="profile.districtLabel">District (Optional)</label>
+              <input type="text" id="profile-district" class="text-input" placeholder="e.g. Bengaluru Urban">
+            </div>
+            <button type="submit" class="primary-btn profile-save-btn" id="profile-save" data-i18n="profile.save">Save Profile ✓</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast hidden" id="toast" role="alert" aria-live="assertive"></div>
+
+  <!-- Scripts -->
+  <script src="services/i18n.js"></script>
+  <script src="services/eligibility.js"></script>
+  <script src="services/timeline.js"></script>
+  <script src="services/chatbot.js"></script>
+  <script src="services/quiz.js"></script>
+  <script src="services/explainer.js"></script>
+  <script src="services/booth.js"></script>
+  <script src="utils/particles.js"></script>
+  <script src="utils/helpers.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

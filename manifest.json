@@ -1,0 +1,17 @@
+{
+  "name": "CivicPulse AI",
+  "short_name": "CivicPulse",
+  "description": "Your Smart Election Assistant - Learn, Check & Vote with Confidence",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#07071A",
+  "theme_color": "#6366F1",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGw9IiM2MzY2RjEiIHJ4PSIxMjgiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyNTZweCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iIGZpbGw9IndoaXRlIj7wnZCPPC90ZXh0Pjwvc3ZnPg==",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

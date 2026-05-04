@@ -1,90 +1,224 @@
-/* ===== Chatbot Service ===== */
+/* ===== CivicPulse AI — Smart Chatbot Service ===== */
+'use strict';
+
 const ChatbotService = {
-  context: [],
-  
+  // ── Conversation context ────────────────────────────────────────────────
+  context: [],          // rolling window of last 6 turns
+  userProfile: null,    // loaded from localStorage
+
+  /** Pull saved profile to personalize responses */
+  loadContext() {
+    try {
+      this.userProfile = JSON.parse(localStorage.getItem('civic_profile')) || null;
+    } catch (_) { this.userProfile = null; }
+  },
+
+  // ── Knowledge base ──────────────────────────────────────────────────────
   knowledgeBase: {
-    'election': 'Elections are the process by which citizens choose their representatives. In India, we have 3 main types:\n\n🏛️ **Lok Sabha** (Parliamentary) - Every 5 years, 543 seats\n🏢 **Vidhan Sabha** (State Assembly) - State-level elections\n🏘️ **Local Body** - Panchayat & Municipal elections\n\nEvery citizen aged 18+ can vote!',
-    'voting': 'Voting in India is simple:\n\n1️⃣ Check your name on the voter list\n2️⃣ Visit your assigned polling booth on election day\n3️⃣ Carry your voter ID (EPIC) or approved ID\n4️⃣ Get your finger inked\n5️⃣ Press the button on the EVM for your candidate\n6️⃣ Verify on VVPAT slip\n\nVoting hours are typically 7 AM to 6 PM.',
-    'register': 'To register as a voter:\n\n📋 **Online:** Visit voters.eci.gov.in → Fill Form 6\n📋 **Offline:** Visit your nearest ERO office\n\n**Documents needed:**\n• Age proof (birth certificate, school certificate)\n• Address proof (Aadhaar, utility bill)\n• Passport-size photo\n\nProcessing takes about 15-30 days.',
-    'evm': 'The EVM (Electronic Voting Machine) is a portable device used for voting in India.\n\n🔒 **Security:** Standalone device, not connected to any network\n📊 **VVPAT:** A paper trail verifies your vote\n🔋 **Battery operated:** Works without electricity\n✅ **One press = One vote:** Cannot vote twice\n\nEVMs have been used since 1999.',
-    'nota': 'NOTA (None of the Above) is an option on the EVM.\n\n• Added in 2013 after Supreme Court order\n• Allows you to reject all candidates\n• NOTA votes are counted but don\'t affect results\n• Even if NOTA gets most votes, the candidate with next highest votes wins',
-    'eligibility': 'To be eligible to vote in India:\n\n✅ Must be an Indian citizen\n✅ Must be 18 years or older on Jan 1 of the qualifying year\n✅ Must be a resident of the constituency\n✅ Must not be disqualified under any law\n\n🌐 NRIs can also vote (must be present in constituency).',
-    'booth': 'To find your polling booth:\n\n1️⃣ Visit voters.eci.gov.in\n2️⃣ Enter your EPIC number or details\n3️⃣ Your polling station will be shown\n\nOr SMS: EPIC <your_number> to 1950\n\nOn election day, look for the ECI signage near your local school or community center.',
-    'eci': 'The Election Commission of India (ECI) is an autonomous constitutional body responsible for administering elections.\n\n👤 Led by the Chief Election Commissioner\n📅 Announces election dates and schedules\n📋 Manages voter registration\n⚖️ Enforces the Model Code of Conduct\n🗳️ Ensures free and fair elections',
-    'why vote': 'Why should you vote?\n\n🗳️ **Your voice matters** - Every vote counts\n🏛️ **Shape policy** - Elect leaders who represent your views\n📢 **Hold accountability** - Vote out non-performing leaders\n🇮🇳 **Democratic duty** - Strengthen India\'s democracy\n💪 **Empower change** - Be part of the solution\n\nRemember: If you don\'t vote, someone else decides for you!',
+    election:
+      'Elections are how citizens choose their representatives.\n\n' +
+      '🏛️ **Lok Sabha** — Every 5 yrs, 543 seats (national)\n' +
+      '🏢 **Vidhan Sabha** — State-level assemblies\n' +
+      '🏘️ **Local Body** — Panchayat & Municipal\n\n' +
+      'Every Indian citizen aged 18+ can vote. Next Lok Sabha election: 2029.',
+
+    voting:
+      'Voting is simple — just 6 steps:\n\n' +
+      '1️⃣ Verify your name on voters.eci.gov.in\n' +
+      '2️⃣ Visit your assigned polling booth (7 AM – 6 PM)\n' +
+      '3️⃣ Carry voter ID (EPIC) or any approved ID\n' +
+      '4️⃣ Get your finger inked\n' +
+      '5️⃣ Press the EVM button for your candidate\n' +
+      '6️⃣ Verify on VVPAT slip\n\n' +
+      '💡 Tip: SMS "EPIC <number>" to **1950** to get your booth details.',
+
+    register:
+      'To register as a voter:\n\n' +
+      '**Online** → voters.eci.gov.in → Form 6\n' +
+      '**Offline** → Nearest ERO office\n\n' +
+      '📄 Documents needed:\n' +
+      '• Age proof (Aadhaar / school cert)\n' +
+      '• Address proof (utility bill / Aadhaar)\n' +
+      '• Passport-size photo\n\n' +
+      '⏱️ Processing takes ~15–30 days. Deadline is usually 30 days before election.',
+
+    evm:
+      '**EVM (Electronic Voting Machine)** — India\'s secure voting device.\n\n' +
+      '🔒 Standalone — no internet, no network connection\n' +
+      '📋 VVPAT — paper trail lets you verify your vote\n' +
+      '🔋 Battery operated — works without electricity\n' +
+      '✅ One press = one vote — cannot vote twice\n\n' +
+      'Used since 1999 across India.',
+
+    nota:
+      '**NOTA (None of the Above)** was added in 2013 after a Supreme Court ruling.\n\n' +
+      '• Lets you reject all candidates on the ballot\n' +
+      '• NOTA votes are counted and published officially\n' +
+      '• Even if NOTA wins, the candidate with next-highest votes wins\n' +
+      '• Sends a strong message to political parties',
+
+    eligibility:
+      'To vote in India, you must:\n\n' +
+      '✅ Be an **Indian citizen** (or NRI with Form 6A)\n' +
+      '✅ Be **18 years or older** on Jan 1 of the qualifying year\n' +
+      '✅ Be a **resident** of the constituency\n' +
+      '✅ Not be disqualified under any law\n\n' +
+      '→ Use the **Eligibility Checker** tab to get your personalised result!',
+
+    booth:
+      'Find your polling booth:\n\n' +
+      '🌐 **Online:** voters.eci.gov.in → Search by EPIC / name\n' +
+      '📱 **SMS:** EPIC <number> → **1950**\n' +
+      '📞 **Helpline:** 1800-111-950 (toll-free)\n\n' +
+      '→ Tap the **Booth Finder** tab for an interactive map search.',
+
+    eci:
+      '**Election Commission of India (ECI)** — autonomous constitutional body.\n\n' +
+      '👤 Headed by the Chief Election Commissioner\n' +
+      '📅 Announces election dates & Model Code of Conduct\n' +
+      '📋 Manages voter registration & EVMs\n' +
+      '⚖️ Ensures free and fair elections since 1950\n\n' +
+      '🌐 Website: eci.gov.in',
+
+    'why vote':
+      'Why vote? Because **every single vote shapes India\'s future.**\n\n' +
+      '🗳️ Close elections are won by thin margins — your vote counts\n' +
+      '🏛️ You elect leaders who decide budgets, laws, and your future\n' +
+      '📢 Non-voters empower others to decide for them\n' +
+      '🌟 Highest turnout districts get better development priority\n\n' +
+      '"The vote is the most powerful nonviolent tool we have." — John Lewis',
+
+    model_code:
+      '**Model Code of Conduct (MCC)** kicks in once elections are announced.\n\n' +
+      '• No new govt schemes can be announced\n' +
+      '• Parties cannot use govt resources for campaigning\n' +
+      '• Polling day is a paid holiday\n' +
+      '• Voter bribery is a criminal offence\n\n' +
+      'Violations can be reported to 1800-111-950.',
+
+    documents:
+      'Accepted photo IDs at polling booths (any one):\n\n' +
+      '🪪 Voter ID (EPIC card)\n' +
+      '🆔 Aadhaar Card\n' +
+      '🏦 Bank / Post Office passbook with photo\n' +
+      '🚗 Driving License\n' +
+      '📘 Passport\n' +
+      '📋 MNREGA Job Card\n\n' +
+      'Even if your name isn\'t on the VVPAT, the ink mark proves you voted.',
   },
 
   suggestions: [
-    'How do elections work?', 'Check my eligibility',
-    'How to register?', 'What is EVM?',
-    'Why should I vote?', 'Find polling booth',
-    'What is NOTA?', 'About ECI'
+    'How do elections work?', 'Am I eligible to vote?',
+    'How to register?',       'What is NOTA?',
+    'Find my polling booth',  'What is EVM?',
+    'Why should I vote?',     'What is Model Code of Conduct?',
   ],
 
+  // ── Decision-tree response engine ────────────────────────────────────────
   getResponse(input) {
-    const q = input.toLowerCase().trim();
-    
-    // Match against knowledge base
-    for (const [key, answer] of Object.entries(this.knowledgeBase)) {
-      if (q.includes(key)) return answer;
+    if (typeof input !== 'string' || !input.trim()) {
+      return 'Please type a question and I\'ll help you! 🗳️';
     }
 
-    // Pattern matching
-    if (q.match(/hi|hello|hey|namaste/)) return t('chat.welcome');
-    if (q.match(/age|18|eligible|can i vote/)) return this.knowledgeBase['eligibility'];
-    if (q.match(/how.*vote|voting process|how.*election/)) return this.knowledgeBase['voting'];
-    if (q.match(/register|sign up|form 6|enrollment/)) return this.knowledgeBase['register'];
-    if (q.match(/where.*vote|polling|booth|station/)) return this.knowledgeBase['booth'];
-    if (q.match(/what.*election|type.*election|kind/)) return this.knowledgeBase['election'];
-    if (q.match(/evm|machine|electronic/)) return this.knowledgeBase['evm'];
-    if (q.match(/nota|none.*above|reject/)) return this.knowledgeBase['nota'];
-    if (q.match(/commission|eci/)) return this.knowledgeBase['eci'];
-    if (q.match(/why.*vote|important|matter/)) return this.knowledgeBase['why vote'];
-    if (q.match(/thank|thanks|ok|great/)) return "You're welcome! 😊 Feel free to ask anything else about elections. Democracy works best when citizens are informed!";
-    if (q.match(/help/)) return "I can help you with:\n\n🗳️ Election process explained\n✅ Voter eligibility check\n📝 Registration guide\n📍 Polling booth finder\n📅 Election timeline\n💡 Myths vs Facts\n\nWhat would you like to know?";
-    
-    return "I'm not sure about that specific question, but I can help with:\n\n• How elections work\n• Voter eligibility\n• Registration process\n• Finding your polling booth\n• Election timeline\n\nTry asking about any of these topics! 🗳️";
+    const q = input.toLowerCase().trim();
+
+    // ── Greetings ─────────────────────────────────────────────────────────
+    if (/^(hi|hello|hey|namaste|namaskar|hola|howdy)/.test(q)) {
+      const name = this.userProfile?.name ? `, ${this.userProfile.name.split(' ')[0]}` : '';
+      return `Namaste${name}! 🙏 I'm CivicPulse AI — your smart election guide.\n\nI can help you with:\n🗳️ How elections work\n✅ Voter eligibility\n📝 Registration steps\n📍 Finding your booth\n💡 Myths vs Facts\n\nWhat would you like to know?`;
+    }
+
+    // ── Personalised context: user has a state saved ──────────────────────
+    const state = this.userProfile?.state;
+
+    // ── Keyword matching (ordered by specificity) ─────────────────────────
+    if (/model code|mcc|conduct/.test(q))          return this.knowledgeBase['model_code'];
+    if (/document|id proof|what.*bring|id.*booth/.test(q)) return this.knowledgeBase['documents'];
+    if (/nota|none.*above|reject.*candidate/.test(q)) return this.knowledgeBase['nota'];
+    if (/evm|electronic.*machine|voting machine/.test(q)) return this.knowledgeBase['evm'];
+    if (/eci|election commission/.test(q))          return this.knowledgeBase['eci'];
+    if (/why.*vote|importance|matter|should i/.test(q)) return this.knowledgeBase['why vote'];
+    if (/register|enroll|sign up|form 6|epic card/.test(q)) return this.knowledgeBase['register'];
+    if (/booth|station|polling|where.*vote/.test(q)) {
+      const base = this.knowledgeBase['booth'];
+      return state ? `${base}\n\n📍 Your state: **${state}** — use the Booth Finder tab for a map search!` : base;
+    }
+    if (/eligib|can i vote|qualify|age.*vote/.test(q)) {
+      const age = this.userProfile?.age;
+      if (age) {
+        const ageNum = parseInt(age, 10);
+        if (ageNum >= 18) return `Based on your profile (age ${ageNum}), you **are eligible** to vote! ✅\n\n${this.knowledgeBase['eligibility']}`;
+        return `Based on your profile (age ${ageNum}), you are **not yet eligible** — you need to be 18. You\'ll be eligible in ${18 - ageNum} year(s)! 📅\n\nIn the meantime, explore the Election Explainer to learn how it all works.`;
+      }
+      return this.knowledgeBase['eligibility'];
+    }
+    if (/how.*vote|voting process|step.*vote/.test(q)) return this.knowledgeBase['voting'];
+    if (/type.*election|kind.*election|lok sabha|vidhan|local body/.test(q)) return this.knowledgeBase['election'];
+    if (/election|how.*work/.test(q))                return this.knowledgeBase['election'];
+
+    // ── Gratitude ─────────────────────────────────────────────────────────
+    if (/thank|thanks|great|awesome|helpful/.test(q)) {
+      return 'You\'re welcome! 😊 Democracy works best when citizens are informed. Any other questions? 🗳️';
+    }
+
+    // ── Help menu ──────────────────────────────────────────────────────────
+    if (/help|menu|what can you|options/.test(q)) {
+      return 'Here\'s what I can help with:\n\n🗳️ **Elections** — types & process\n✅ **Eligibility** — can you vote?\n📝 **Registration** — how to register\n📍 **Polling Booth** — find yours\n🪪 **Documents** — what to carry\n⚖️ **Model Code of Conduct**\n🔴 **NOTA** — what it means\n💡 **Myths vs Facts** — debunking\n\nJust ask naturally!';
+    }
+
+    // ── Fallback ──────────────────────────────────────────────────────────
+    this._pushContext(q, null);
+    return 'I\'m not sure about that — but I\'m great at election topics! Try asking:\n\n• "How do I register to vote?"\n• "What ID do I need at the booth?"\n• "What is NOTA?"\n• "Am I eligible to vote?"\n\nOr tap a suggestion below. 👇';
   },
 
+  _pushContext(q, ans) {
+    this.context.push({ q, ans, ts: Date.now() });
+    if (this.context.length > 6) this.context.shift();
+  },
+
+  // ── DOM helpers ──────────────────────────────────────────────────────────
   addMessage(container, text, isUser) {
     const div = document.createElement('div');
     div.className = `msg ${isUser ? 'user' : 'bot'}`;
+    div.setAttribute('role', 'article');
+    div.setAttribute('aria-label', isUser ? 'Your message' : 'CivicPulse AI response');
     container.appendChild(div);
 
-    const htmlContent = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    
+    // Sanitize then allow safe markdown subset for bot messages
+    const safe = isUser ? sanitize(text) : renderSafeMarkdown(text);
+
     if (isUser) {
-      div.innerHTML = htmlContent;
+      div.innerHTML = safe;
       container.scrollTop = container.scrollHeight;
-    } else {
-      let i = 0;
-      div.innerHTML = '';
-      const interval = setInterval(() => {
-        if (htmlContent[i] === '<') {
-          const endIdx = htmlContent.indexOf('>', i);
-          if (endIdx !== -1) {
-            div.innerHTML += htmlContent.slice(i, endIdx + 1);
-            i = endIdx + 1;
-          } else {
-            div.innerHTML += htmlContent[i];
-            i++;
-          }
-        } else {
-          div.innerHTML += htmlContent[i];
-          i++;
-        }
-        container.scrollTop = container.scrollHeight;
-        if (i >= htmlContent.length) {
-          clearInterval(interval);
-        }
-      }, 15); // Fast typing speed
+      return;
     }
+
+    // Typing stream for bot
+    let i = 0;
+    div.innerHTML = '';
+    const chars = [...safe]; // spread handles multi-byte chars
+    const interval = setInterval(() => {
+      // consume HTML tags as atomic units
+      if (chars[i] === '<') {
+        let tag = '';
+        while (i < chars.length && chars[i] !== '>') { tag += chars[i]; i++; }
+        tag += '>'; i++;
+        div.innerHTML += tag;
+      } else {
+        div.innerHTML += chars[i] || '';
+        i++;
+      }
+      container.scrollTop = container.scrollHeight;
+      if (i >= chars.length) clearInterval(interval);
+    }, 12);
   },
 
   showTyping(container) {
     const div = document.createElement('div');
     div.className = 'msg bot msg-typing';
     div.id = 'typing-indicator';
+    div.setAttribute('aria-label', 'CivicPulse AI is typing');
+    div.setAttribute('aria-live', 'polite');
     div.innerHTML = '<span></span><span></span><span></span>';
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
@@ -92,14 +226,15 @@ const ChatbotService = {
   },
 
   removeTyping() {
-    const el = document.getElementById('typing-indicator');
-    if (el) el.remove();
+    document.getElementById('typing-indicator')?.remove();
   },
 
   renderSuggestions(container, suggestions) {
-    let selected = suggestions || [...this.suggestions].sort(() => 0.5 - Math.random()).slice(0, 4);
-    container.innerHTML = selected.map((s, i) =>
-      `<button class="suggestion-chip" style="animation: fadeUp 0.4s ease backwards ${i * 0.1}s" onclick="App.handleSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`
+    const chips = suggestions || [...this.suggestions].sort(() => 0.5 - Math.random()).slice(0, 4);
+    container.innerHTML = chips.map((s, i) =>
+      `<button class="suggestion-chip" style="animation-delay:${i * 0.08}s"
+         onclick="App.handleSuggestion(${JSON.stringify(s)})"
+         aria-label="Suggest: ${sanitize(s)}">${sanitize(s)}</button>`
     ).join('');
-  }
+  },
 };

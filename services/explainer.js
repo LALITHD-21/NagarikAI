@@ -61,18 +61,54 @@ const MythsService = {
 
 const BoothService = {
   sampleBooths: [
-    { name: 'Government Primary School, Ward 5', addr: 'MG Road, Near City Bus Stand', distance: '0.8 km' },
-    { name: 'Community Hall, Sector 12', addr: 'Behind Post Office, Main Street', distance: '1.2 km' },
-    { name: 'Municipal School No. 3', addr: 'Gandhi Nagar, 2nd Cross', distance: '1.5 km' },
+    { name: 'Government Primary School, Ward 5', addr: 'MG Road, Near City Bus Stand', distance: '0.8 km', pin: 'MG Road polling booth India' },
+    { name: 'Community Hall, Sector 12', addr: 'Behind Post Office, Main Street', distance: '1.2 km', pin: 'Community Hall Sector 12 polling booth' },
+    { name: 'Municipal School No. 3', addr: 'Gandhi Nagar, 2nd Cross', distance: '1.5 km', pin: 'Municipal School Gandhi Nagar polling booth' },
   ],
+
+  /**
+   * Embed a real Google Maps search for polling booths near a query.
+   * Uses the public Maps embed URL (no API key required for iframe embed).
+   * @param {string} query
+   * @returns {string} iframe HTML
+   */
+  _mapEmbed(query) {
+    const q = encodeURIComponent(`polling booth near ${query}`);
+    return `<div class="map-embed-wrapper" role="region" aria-label="Google Maps polling booth search">
+      <iframe
+        title="Polling booths near ${sanitize(query)}"
+        width="100%" height="260" style="border:0;border-radius:12px;"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=${q}&output=embed&z=14"
+        allowfullscreen aria-label="Map of polling booths">
+      </iframe>
+      <a class="reg-link" href="https://maps.google.com/maps?q=${q}" target="_blank" rel="noopener noreferrer">
+        🗺️ Open full map in Google Maps →
+      </a>
+    </div>`;
+  },
+
+  /** Google Calendar "Add Reminder" deep link for election day */
+  _calendarLink(eventName = 'India Election Day — Go Vote!', date = '20290515') {
+    const base = 'https://calendar.google.com/calendar/render?action=TEMPLATE';
+    return `${base}&text=${encodeURIComponent(eventName)}&dates=${date}/${date}&details=${encodeURIComponent('Go vote at your local polling booth! Check voters.eci.gov.in for your booth details.')}&location=${encodeURIComponent('Your Polling Booth')}`;
+  },
 
   render(container) {
     container.innerHTML = `
       <div class="booth-search">
-        <input type="text" id="booth-query" placeholder="Enter your area or PIN code..." aria-label="Search polling booth" onkeydown="if(event.key==='Enter') BoothService.search()">
-        <button class="primary-btn" style="flex:0;padding:12px 20px;" onclick="BoothService.search()">🔍</button>
+        <input type="text" id="booth-query" placeholder="Enter your area or PIN code..."
+          aria-label="Search polling booth by area or PIN code"
+          onkeydown="if(event.key==='Enter') BoothService.search()">
+        <button class="primary-btn" style="flex:0;padding:12px 20px;"
+          onclick="BoothService.search()" aria-label="Search booths">🔍 Search</button>
       </div>
-      <button class="secondary-btn" style="width:100%;margin-bottom:16px;" onclick="BoothService.useLocation()">📍 Use My Location</button>
+      <button class="secondary-btn" style="width:100%;margin-bottom:16px;"
+        onclick="BoothService.useLocation()" aria-label="Use my GPS location">📍 Use My Location</button>
+      <a href="${this._calendarLink()}" target="_blank" rel="noopener noreferrer"
+        class="secondary-btn" style="display:block;width:100%;text-align:center;margin-bottom:16px;text-decoration:none;">
+        📅 Add Election Reminder to Google Calendar
+      </a>
       <div id="booth-results" class="booth-results-container">
         <div class="empty-state">
            <div class="empty-icon">🗺️</div>
@@ -88,28 +124,31 @@ const BoothService = {
   },
 
   search() {
-    const q = document.getElementById('booth-query').value.trim();
+    const q = document.getElementById('booth-query')?.value.trim();
     if (!q) { App.showToast('Please enter an area or PIN code'); return; }
-    
+    // Sanitize before use in DOM
+    const safeQ = validateText(q, 100) || q.slice(0, 100);
     const resultsContainer = document.getElementById('booth-results');
     resultsContainer.innerHTML = `
-      <div class="radar-loader">
+      <div class="radar-loader" role="status" aria-label="Searching for booths">
         <div class="radar-circle"></div>
         <div class="radar-circle delay"></div>
-        <div class="radar-text">Scanning for booths near "${q}"...</div>
-      </div>
-    `;
-    
+        <div class="radar-text">Scanning for booths near "${sanitize(safeQ)}"...</div>
+      </div>`;
+
     setTimeout(() => {
-      resultsContainer.innerHTML = this.sampleBooths.map((b, i) => `
-        <div class="booth-card" style="animation: fadeUp 0.4s ease ${i * 0.1}s backwards">
-          <h3>🏫 ${b.name}</h3>
-          <p>${b.addr}</p>
-          <p style="color:var(--primary-light);font-weight:600;">📏 ${b.distance} away</p>
-          <a href="https://maps.google.com/?q=${encodeURIComponent(b.name + ' ' + b.addr)}" target="_blank" rel="noopener" class="map-link">📍 Directions →</a>
-        </div>
-      `).join('');
-    }, 1800);
+      resultsContainer.innerHTML =
+        this.sampleBooths.map((b, i) => `
+          <div class="booth-card" style="animation: fadeUp 0.4s ease ${i * 0.1}s backwards">
+            <h3>🏫 ${sanitize(b.name)}</h3>
+            <p>${sanitize(b.addr)}</p>
+            <p style="color:var(--primary-light);font-weight:600;">📏 ${sanitize(b.distance)} away</p>
+            <a href="https://maps.google.com/maps?q=${encodeURIComponent(b.name + ' ' + b.addr)}"
+               target="_blank" rel="noopener noreferrer" class="map-link">📍 Get Directions →</a>
+          </div>`
+        ).join('') +
+        this._mapEmbed(safeQ);
+    }, 1600);
   },
 
   useLocation() {

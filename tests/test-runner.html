@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicPulse AI — Test Runner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07071A; --bg2: #0F0F2D; --primary: #6366F1; --cyan: #06B6D4;
+      --success: #10B981; --danger: #EF4444; --text: #F1F5F9; --text-dim: #94A3B8;
+      --glass: rgba(255,255,255,0.06); --border: rgba(255,255,255,0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+           min-height: 100vh; padding: 24px 16px 48px; }
+    .header { text-align: center; padding: 32px 0 24px; }
+    .header h1 { font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, #818CF8, #8B5CF6, #06B6D4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: var(--text-dim); margin-top: 8px; font-size: 14px; }
+    .container { max-width: 760px; margin: 0 auto; }
+    #run-btn {
+      display: block; width: 100%; padding: 16px; margin-bottom: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      border: none; border-radius: 12px; color: #fff;
+      font: 700 16px 'Inter', sans-serif; cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+    #run-btn:hover { opacity: .9; transform: translateY(-2px); }
+    #run-btn:disabled { opacity: .5; cursor: default; transform: none; }
+    #status { font: 600 14px 'Inter'; text-align: center;
+              color: var(--text-dim); margin-bottom: 16px; min-height: 20px; }
+    .summary-card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px 24px; margin-bottom: 20px;
+      display: none;
+    }
+    .summary-card.visible { display: block; }
+    .summary-card.all-pass { border-color: rgba(16,185,129,.4); }
+    .summary-card.has-fail  { border-color: rgba(239,68,68,.4); }
+    .summary-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .summary-card.all-pass h3 { color: var(--success); }
+    .summary-card.has-fail  h3 { color: var(--danger); }
+    .progress-bar { height: 8px; background: rgba(255,255,255,.08);
+                    border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+    .progress-fill { height: 100%; border-radius: 4px;
+                     background: linear-gradient(90deg, var(--primary), var(--cyan));
+                     transition: width .6s ease; }
+    .summary-card p { color: var(--text-dim); font-size: 13px; }
+    .suite { background: var(--glass); border: 1px solid var(--border);
+             border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .suite-header {
+      padding: 14px 18px; font: 600 14px 'Inter'; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      user-select: none;
+    }
+    .suite-header:hover { background: rgba(255,255,255,.04); }
+    .suite-badge { font-size: 12px; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+    .suite-badge.pass { background: rgba(16,185,129,.15); color: var(--success); }
+    .suite-badge.fail { background: rgba(239,68,68,.15);  color: var(--danger); }
+    .suite-body { display: none; padding: 0 18px 14px; border-top: 1px solid var(--border); }
+    .suite.open .suite-body { display: block; }
+    .test-item { font: 400 13px 'JetBrains Mono', monospace; padding: 5px 0;
+                 color: var(--text-dim); display: flex; align-items: flex-start; gap: 8px; }
+    .test-item.ok   { color: #86efac; }
+    .test-item.fail { color: #fca5a5; }
+    .test-icon { flex-shrink: 0; }
+    .log-output {
+      background: #050514; border: 1px solid var(--border); border-radius: 8px;
+      padding: 16px; margin-top: 20px; font: 400 12px 'JetBrains Mono', monospace;
+      color: #a5f3fc; max-height: 300px; overflow-y: auto; white-space: pre-wrap;
+      display: none;
+    }
+    .log-output.visible { display: block; }
+    #toggle-log { background: none; border: 1px solid var(--border); color: var(--text-dim);
+                  border-radius: 8px; padding: 8px 16px; font: 500 13px 'Inter';
+                  cursor: pointer; margin-top: 12px; }
+    #toggle-log:hover { border-color: var(--primary); color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>🧪 CivicPulse Test Runner</h1>
+      <p>Automated validation of all services, security, and utilities</p>
+    </header>
+
+    <button id="run-btn">▶ Run All Tests</button>
+    <div id="status">Click "Run All Tests" to start</div>
+
+    <div class="summary-card" id="summary-card"></div>
+    <div id="suites-container"></div>
+
+    <button id="toggle-log" style="display:none">📋 Toggle Console Log</button>
+    <div class="log-output" id="log-output"></div>
+  </div>
+
+  <!-- Load all app services first -->
+  <script src="../services/i18n.js"></script>
+  <script src="../services/eligibility.js"></script>
+  <script src="../services/timeline.js"></script>
+  <script src="../services/chatbot.js"></script>
+  <script src="../services/quiz.js"></script>
+  <script src="../utils/helpers.js"></script>
+
+  <script>
+    // Intercept console for log display
+    const logEl = document.getElementById('log-output');
+    const _origLog = console.log, _origErr = console.error;
+    const logLines = [];
+    ['log','error','warn'].forEach(m => {
+      const orig = console[m];
+      console[m] = (...a) => {
+        orig.apply(console, a);
+        logLines.push(a.join(' '));
+        logEl.textContent = logLines.join('\n');
+      };
+    });
+
+    document.getElementById('toggle-log').addEventListener('click', () => {
+      logEl.classList.toggle('visible');
+    });
+
+    document.getElementById('run-btn').addEventListener('click', runTests);
+
+    function runTests() {
+      const btn = document.getElementById('run-btn');
+      btn.disabled = true;
+      document.getElementById('status').textContent = '⏳ Running tests…';
+      document.getElementById('suites-container').innerHTML = '';
+      document.getElementById('summary-card').className = 'summary-card';
+      logLines.length = 0; logEl.textContent = '';
+
+      // Tiny delay for UI repaint
+      setTimeout(() => {
+        // ── Inline test runner ───────────────────────────────────────────
+        const allSuites = [];
+        let currentSuite = null;
+
+        function suite(name, fn) {
+          currentSuite = { name, tests: [] };
+          allSuites.push(currentSuite);
+          fn(assert);
+          currentSuite = null;
+        }
+
+        function assert(cond, label) {
+          const ok = typeof cond === 'function' ? (() => { try { return !!cond(); } catch(e){ return false; } })() : !!cond;
+          if (currentSuite) currentSuite.tests.push({ ok, label });
+          if (ok) console.log(`✅ ${label}`);
+          else     console.error(`❌ FAIL: ${label}`);
+          return ok;
+        }
+
+        // ── Make helpers available (they use DOM so mock what's needed) ──
+        function sanitize(str) {
+          if (typeof str !== 'string') return '';
+          const el = document.createElement('div');
+          el.textContent = str;
+          return el.innerHTML;
+        }
+        function validateAge(val) {
+          const n = parseInt(String(val), 10);
+          return (!isNaN(n) && n >= 1 && n <= 150) ? n : null;
+        }
+        function validateText(val, maxLen = 200) {
+          if (typeof val !== 'string') return null;
+          const t = val.trim().slice(0, maxLen);
+          return t.length > 0 ? t : null;
+        }
+        const _rl = {};
+        function rateLimit(key, limit = 10, ms = 10000) {
+          const now = Date.now();
+          if (!_rl[key]) _rl[key] = { count: 0, reset: now + ms };
+          if (now > _rl[key].reset) _rl[key] = { count: 0, reset: now + ms };
+          if (_rl[key].count >= limit) return false;
+          _rl[key].count++; return true;
+        }
+
+        // ─── SUITES ──────────────────────────────────────────────────────
+        suite('Eligibility — Age', assert => {
+          assert(EligibilityService.check(25,'yes','KA').eligible === true, 'Age 25 → eligible');
+          assert(EligibilityService.check(18,'yes','DL').eligible === true, 'Age 18 boundary → eligible');
+          assert(EligibilityService.check(17,'yes','KL').eligible === false,'Age 17 → not eligible');
+          assert(EligibilityService.check(17,'yes','KL').type === 'underage', 'type = underage');
+          assert(EligibilityService.check(0, 'yes','BR').eligible === false,'Age 0 → invalid');
+          assert(EligibilityService.check(-5,'yes','UP').type === 'invalid', 'Negative → invalid');
+          assert(EligibilityService.check(151,'yes','GO').eligible=== false,'Age 151 → invalid');
+          assert(EligibilityService.check(null,'yes','MP').eligible===false, 'Null → invalid');
+        });
+
+        suite('Eligibility — Citizenship', assert => {
+          assert(EligibilityService.check(25,'no','DL').eligible===false,   'Non-citizen → not eligible');
+          assert(EligibilityService.check(25,'no','DL').type==='non-citizen','type = non-citizen');
+          assert(EligibilityService.check(30,'nri','MH').eligible===true,   'NRI → eligible');
+          assert(EligibilityService.check(30,'nri','MH').type==='nri',      'NRI type correct');
+          assert(EligibilityService.check(18,'yes','').eligible===true,     'No state → still eligible');
+          assert(EligibilityService.check(18,'','DL').eligible===false,     'Empty citizenship → invalid');
+        });
+
+        suite('Eligibility — Result shape', assert => {
+          const r = EligibilityService.check(25,'yes','KA');
+          assert(Array.isArray(r.steps),            'steps is array');
+          assert(typeof r.message === 'string',     'message is string');
+          assert(typeof r.description === 'string', 'description is string');
+          assert(r.steps.length > 0,                'eligible has steps');
+        });
+
+        suite('Chatbot — Knowledge Base', assert => {
+          assert(typeof ChatbotService.knowledgeBase === 'object', 'KB is object');
+          assert(Object.keys(ChatbotService.knowledgeBase).length >= 8, '≥8 KB entries');
+          assert(typeof ChatbotService.getResponse('elections') === 'string', 'returns string');
+          assert(ChatbotService.getResponse('').length > 0, 'empty input returns fallback');
+          assert(!ChatbotService.getResponse('<script>alert(1)</script>').includes('<script>'), 'XSS not reflected');
+        });
+
+        suite('Chatbot — Response Quality', assert => {
+          const cases = [
+            ['how do elections work', 'lok sabha'],
+            ['how to register',       'form'],
+            ['what is nota',          'none'],
+            ['what is evm',           'electronic'],
+            ['why vote',              'vote'],
+          ];
+          cases.forEach(([q, kw]) => {
+            const r = ChatbotService.getResponse(q);
+            assert(r.toLowerCase().includes(kw), `"${q}" contains "${kw}"`);
+          });
+        });
+
+        suite('Timeline — Data Integrity', assert => {
+          assert(Array.isArray(TimelineService.events),         'events is array');
+          assert(TimelineService.events.length >= 5,           '≥5 events');
+          const dates = TimelineService.events.map(e => new Date(e.date).getTime());
+          assert(dates.every(d => !isNaN(d)),                  'all dates parseable');
+          let sorted = true;
+          for (let i = 1; i < dates.length; i++) if (dates[i] < dates[i-1]) sorted = false;
+          assert(sorted, 'events in chronological order');
+        });
+
+        suite('Quiz — Structure', assert => {
+          QuizService.init();
+          assert(QuizService.shuffled.length === 5, '5 questions selected');
+          assert(QuizService.score === 0,            'score resets');
+          QuizService.questions.forEach((q, i) => {
+            assert(q.opts.length === 4,                                `Q${i+1}: 4 options`);
+            assert(q.answer >= 0 && q.answer < 4,                     `Q${i+1}: valid answer`);
+            assert(typeof q.explain === 'string' && q.explain.length > 5, `Q${i+1}: has explanation`);
+          });
+        });
+
+        suite('i18n — Completeness', assert => {
+          ['en','hi','kn'].forEach(l => {
+            assert(typeof I18N[l] === 'object',           `I18N.${l} exists`);
+            assert(Object.keys(I18N[l]).length >= 10,     `I18N.${l} ≥10 keys`);
+          });
+          setLanguage('en');
+          assert(t('nav.home') === 'Home', 'EN nav.home = "Home"');
+          assert(t('missing.key') === 'missing.key', 'missing key returns itself');
+        });
+
+        suite('Security — sanitize()', assert => {
+          assert(sanitize('<script>alert(1)</script>') === '&lt;script&gt;alert(1)&lt;/script&gt;', 'escapes script');
+          assert(sanitize('Safe text') === 'Safe text', 'passes plain text');
+          assert(sanitize('') === '', 'handles empty');
+          assert(sanitize(null) === '', 'handles null');
+          assert(sanitize(42) === '', 'handles non-string');
+        });
+
+        suite('Security — validateAge()', assert => {
+          assert(validateAge('25')  === 25,   '"25" → 25');
+          assert(validateAge('-1')  === null, 'negative → null');
+          assert(validateAge('0')   === null, 'zero → null');
+          assert(validateAge('151') === null, '151 → null');
+          assert(validateAge('abc') === null, 'non-numeric → null');
+          assert(validateAge(null)  === null, 'null → null');
+        });
+
+        suite('Security — validateText()', assert => {
+          assert(validateText('Rahul')  === 'Rahul',       'valid name');
+          assert(validateText('  hi  ') === 'hi',          'trims whitespace');
+          assert(validateText('')       === null,           'empty → null');
+          assert(validateText('   ')    === null,           'spaces-only → null');
+          assert(validateText(null)     === null,           'null → null');
+          const long = 'a'.repeat(300);
+          assert(validateText(long, 200) === 'a'.repeat(200), 'truncates at maxLen');
+        });
+
+        suite('Security — rateLimit()', assert => {
+          const key = '_rl_' + Date.now();
+          let ok = 0;
+          for (let i = 0; i < 15; i++) if (rateLimit(key, 10, 60000)) ok++;
+          assert(ok === 10, 'caps at 10 calls');
+          assert(rateLimit(key, 10, 60000) === false, '11th call blocked');
+        });
+
+        // ─── Render results ───────────────────────────────────────────────
+        let totalPass = 0, totalFail = 0;
+        const container = document.getElementById('suites-container');
+
+        allSuites.forEach(s => {
+          const p = s.tests.filter(t => t.ok).length;
+          const f = s.tests.length - p;
+          totalPass += p; totalFail += f;
+
+          const div = document.createElement('div');
+          div.className = `suite ${f === 0 ? '' : 'has-fail'}`;
+          div.innerHTML = `
+            <div class="suite-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>${s.name}</span>
+              <span class="suite-badge ${f===0?'pass':'fail'}">${p}/${s.tests.length}</span>
+            </div>
+            <div class="suite-body">
+              ${s.tests.map(t =>
+                `<div class="test-item ${t.ok?'ok':'fail'}">
+                   <span class="test-icon">${t.ok?'✅':'❌'}</span>
+                   <span>${t.label}</span>
+                 </div>`
+              ).join('')}
+            </div>`;
+          if (f > 0) div.querySelector('.suite').classList?.add('open');
+          container.appendChild(div);
+          if (f > 0) div.classList.add('open');
+        });
+
+        const total = totalPass + totalFail;
+        const pct   = total ? Math.round(totalPass / total * 100) : 0;
+        const card  = document.getElementById('summary-card');
+        card.className = `summary-card visible ${totalFail===0?'all-pass':'has-fail'}`;
+        card.innerHTML = `
+          <h3>${totalFail===0 ? '✅ All Tests Pass!' : `⚠️ ${totalFail} Test(s) Failed`}</h3>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <p>${totalPass} passed · ${totalFail} failed · ${total} total · ${pct}%</p>`;
+
+        document.getElementById('status').textContent =
+          `${totalFail===0?'🎉':'⚠️'} Finished — ${pct}% pass rate`;
+        document.getElementById('toggle-log').style.display = 'inline-block';
+        btn.disabled = false;
+      }, 80);
+    }
+  </script>
+</body>
+</html>

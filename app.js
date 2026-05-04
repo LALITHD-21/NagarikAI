@@ -139,7 +139,7 @@ const App = {
     if (id === 'myths') MythsService.render(document.getElementById('myths-content'));
     if (id === 'booth') BoothService.render(document.getElementById('booth-content'));
     if (id === 'profile') this.loadProfile();
-    if (id === 'chat') this.initChatWelcome();
+    if (id === 'chat') { ChatbotService.loadContext(); this.initChatWelcome(); }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },

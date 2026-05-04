@@ -1,11 +1,11 @@
 <div align="center">
 
-# 🗳️ CivicPulse AI
+# 🗳️ NagarikAI
 ### *India's Smartest Civic Education Platform*
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://civicpulse.run.app)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Google_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://NagarikAI.run.app)
 [![Version](https://img.shields.io/badge/Version-2.0.0-6366F1?style=for-the-badge)](#)
 [![License](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
 [![Size](https://img.shields.io/badge/Bundle_Size-<10MB-F59E0B?style=for-the-badge)](#performance)
@@ -14,7 +14,7 @@
 
 <br/>
 
-> **CivicPulse AI** is a premium, context-aware civic assistant that helps every Indian citizen understand, participate in, and engage with the democratic process — from checking eligibility to finding their polling booth on a live Google Map.
+> **NagarikAI** is a premium, context-aware civic assistant that helps every Indian citizen understand, participate in, and engage with the democratic process — from checking eligibility to finding their polling booth on a live Google Map.
 
 <br/>
 
@@ -109,7 +109,7 @@ Full UI translation in **English**, **Hindi (हिंदी)**, and **Kannada (
 ### Design Philosophy
 > *"Every interaction should feel alive. Every pixel should feel intentional."*
 
-CivicPulse uses a **premium glassmorphism dark theme** built entirely with custom CSS — no Tailwind, no Bootstrap.
+NagarikAI uses a **premium glassmorphism dark theme** built entirely with custom CSS — no Tailwind, no Bootstrap.
 
 ### Color Palette
 
@@ -195,7 +195,7 @@ explainer.js ──────────┘      │
 ## 📁 Project Structure
 
 ```
-civicpulse-ai/
+NagarikAI-ai/
 │
 ├── 📄 index.html              # Entry point — semantic HTML5, SEO meta, ARIA
 ├── 🎨 index.css               # Full design system (750+ lines, zero frameworks)
@@ -354,7 +354,7 @@ rateLimit(key, n, ms)  // Token bucket — e.g. max 10 chat msgs/10s
 
 ## ♿ Accessibility
 
-CivicPulse targets **WCAG 2.1 Level AA** compliance.
+NagarikAI targets **WCAG 2.1 Level AA** compliance.
 
 ### Implementation Details
 
@@ -439,8 +439,8 @@ document.head.appendChild(s);
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/civicpulse-ai.git
-cd civicpulse-ai
+git clone https://github.com/your-username/NagarikAI-ai.git
+cd NagarikAI-ai
 
 # 2. Open directly (simplest)
 start index.html           # Windows
@@ -465,10 +465,10 @@ python -m http.server 8000 # Python
 
 ```bash
 # Build image
-docker build -t civicpulse-ai .
+docker build -t NagarikAI-ai .
 
 # Run container
-docker run -p 8080:8080 civicpulse-ai
+docker run -p 8080:8080 NagarikAI-ai
 
 # Open
 open http://localhost:8080
@@ -492,11 +492,11 @@ gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
 
 # 2. Build & push to Artifact Registry
-gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/civicpulse-ai
+gcloud builds submit --tag gcr.io/YOUR_PROJECT_ID/NagarikAI-ai
 
 # 3. Deploy to Cloud Run
-gcloud run deploy civicpulse-ai \
-  --image gcr.io/YOUR_PROJECT_ID/civicpulse-ai \
+gcloud run deploy NagarikAI-ai \
+  --image gcr.io/YOUR_PROJECT_ID/NagarikAI-ai \
   --platform managed \
   --region asia-south1 \
   --allow-unauthenticated \
@@ -509,7 +509,7 @@ gcloud run deploy civicpulse-ai \
 ### Health Check
 ```bash
 curl https://your-service-url/health
-# → {"status":"ok","service":"civicpulse"}
+# → {"status":"ok","service":"NagarikAI"}
 ```
 
 ### nginx Configuration Highlights
@@ -584,7 +584,7 @@ location ~ /\. { deny all; }
 
 ```bash
 # 1. Fork → Clone
-git clone https://github.com/your-username/civicpulse-ai.git
+git clone https://github.com/your-username/NagarikAI-ai.git
 
 # 2. Create feature branch
 git checkout -b feature/your-feature-name
@@ -617,7 +617,7 @@ git push origin feature/your-feature-name
 ```
 MIT License
 
-Copyright (c) 2026 CivicPulse AI
+Copyright (c) 2026 NagarikAI
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software to use, copy, modify, merge, publish, distribute, and/or
